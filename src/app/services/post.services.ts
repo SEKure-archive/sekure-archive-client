@@ -13,8 +13,9 @@ export class PostService{
   // private SEKurl = 'https://jsonplaceholder.typicode.com/posts';
   private SEKurl = 'http://172.17.0.2:8080';
 
-  private testBody{
-    "email": "dksddssdskjdds",
+
+  private testBody ={
+    "email": "dksdsddssdskjdds",
     "password": "sddfsjsdd"
   }
 
@@ -37,19 +38,16 @@ export class PostService{
   addUser () {
     // var body = {email : 'some@thing.com', password : '1234'};
 
-      let bodyString = JSON.stringify(this.testBody); // Stringify payload
-      let headers      = new Headers({ 'Content-Type': 'application/json' });
-      headers.append('Access-Control-Allow-Origin', '*')
-      let options       = new RequestOptions({ headers: headers });
+    let bodyString = JSON.stringify(this.testBody); // Stringify payload
+    let headers      = new Headers({ 'Content-Type': 'application/json' });
+    headers.append('Access-Control-Allow-Origin', '*')
+    let options       = new RequestOptions({ headers: headers });
 
 
-      return this.http.post(this.SEKurl + '/authentication/register', bodyString,  options) // ...using post request
-      // .timeout(3000)
-      .map((res) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-
-
-
+    return this.http.post(this.SEKurl + '/authentication/register', bodyString,  options) // ...using post request
+    // .timeout(3000)
+    .map((res) => res.json())
+    .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
   }
+
+}

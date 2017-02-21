@@ -23,7 +23,7 @@ var PostService = (function () {
         // private SEKurl = 'https://jsonplaceholder.typicode.com/posts';
         this.SEKurl = 'http://172.17.0.2:8080';
         this.testBody = {
-            "email": "dksddssdskjdds",
+            "email": "dksdsddssdskjdds",
             "password": "sddfsjsdd"
         };
         console.log('Postservice initialized...');
