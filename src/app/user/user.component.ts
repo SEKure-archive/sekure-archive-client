@@ -21,9 +21,10 @@ export class UserComponent  {
 ***************  API CALL *************************
       Returns observable,  Use subscribe method
 */
-    this.postService.getPosts().subscribe(posts => {
+    this.postService.addUser ().subscribe(posts => {
       //Process Data
       console.log(posts);
+      () => console.log('END');
     });
 
     // Variables

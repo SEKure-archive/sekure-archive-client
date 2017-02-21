@@ -19,9 +19,10 @@ var UserComponent = (function () {
         ***************  API CALL *************************
               Returns observable,  Use subscribe method
         */
-        this.postService.getPosts().subscribe(function (posts) {
+        this.postService.addUser().subscribe(function (posts) {
             //Process Data
             console.log(posts);
+            (function () { return console.log('END'); });
         });
         // Variables
         this.file_name = '';

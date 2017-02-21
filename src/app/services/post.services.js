@@ -14,23 +14,36 @@ var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
+require('rxjs/add/operator/timeout');
+// import 'rxjs/add/observable/throw';
 var PostService = (function () {
     //Class constructor
     function PostService(http) {
         this.http = http;
+        // private SEKurl = 'https://jsonplaceholder.typicode.com/posts';
+        this.SEKurl = 'http://172.17.0.2:8080';
+        this.testBody = {
+            "email": "dksddssdskjdds",
+            "password": "sddfsjsdd"
+        };
         console.log('Postservice initialized...');
     }
     // Make API CAll
     // Map Responce to json object
     PostService.prototype.getPosts = function () {
-        var SEKurl = 'https://jsonplaceholder.typicode.com/posts';
-        return this.http.get(SEKurl)
+        return this.http.get(this.SEKurl + '/filesystem/folders')
+            .timeout(3000)
+            .map(function (res) { return res.json(); });
+    };
+    PostService.prototype.addUser = function () {
+        // var body = {email : 'some@thing.com', password : '1234'};
+        var bodyString = JSON.stringify(this.testBody); // Stringify payload
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        headers.append('Access-Control-Allow-Origin', '*');
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.SEKurl + '/authentication/register', bodyString, options) // ...using post request
             .map(function (res) { return res.json(); })
-            .catch(function (err) {
-            console.log('Error:  Service post/get API data.  Problem with "map" method.');
-            console.log(err);
-            return Observable_1.Observable.throw(err.json().err || 'Server error');
-        });
+            .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
     };
     PostService = __decorate([
         core_1.Injectable(), 
