@@ -8,48 +8,71 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-// Test with https://jsonplaceholder.typicode.com/
-var core_1 = require('@angular/core');
-var http_1 = require('@angular/http');
-var Observable_1 = require('rxjs/Observable');
-require('rxjs/add/operator/map');
-require('rxjs/add/operator/catch');
-require('rxjs/add/operator/timeout');
-// import 'rxjs/add/observable/throw';
+var core_1 = require("@angular/core");
+var http_1 = require("@angular/http");
+var Observable_1 = require("rxjs/Observable");
+require("rxjs/add/operator/map");
+require("rxjs/add/operator/catch");
+require("rxjs/add/operator/timeout");
 var PostService = (function () {
-    //Class constructor
     function PostService(http) {
         this.http = http;
-        // private SEKurl = 'https://jsonplaceholder.typicode.com/posts';
-        this.SEKurl = 'http://172.17.0.2:8080';
-        this.testBody = {
-            "email": "dksdsddssdskjdds",
-            "password": "sddfsjsdd"
-        };
+        this.URL = 'http://172.17.0.2:8080';
+        this.timeOute = 3000;
         console.log('Postservice initialized...');
     }
-    // Make API CAll
-    // Map Responce to json object
-    PostService.prototype.getPosts = function () {
-        return this.http.get(this.SEKurl + '/filesystem/folders')
-            .timeout(3000)
-            .map(function (res) { return res.json(); });
-    };
-    PostService.prototype.addUser = function () {
-        // var body = {email : 'some@thing.com', password : '1234'};
-        var bodyString = JSON.stringify(this.testBody); // Stringify payload
+    PostService.prototype.makeRequest = function (method, path, body, authorization) {
+        var bodyJSON = JSON.stringify(body);
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        headers.append('Access-Control-Allow-Origin', '*');
+        headers.append({ 'Access-Control-Allow-Origin': , '*':  });
+        headers.append({ authorization: authorization });
+        var options = new http_1.RequestOptions({
+            url: this.URL,
+            body: bodyJSON,
+            method: method,
+            headers: headers
+        });
+        return this.http.request(new http_1.Request(options)).timeout(this.timeOute)
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
+        ;
+    };
+    PostService.prototype.getPosts = function (authentication) {
+        var headers = this.headerTemplate;
+        headers.append(authentication, authentication);
         var options = new http_1.RequestOptions({ headers: headers });
-        return this.http.post(this.SEKurl + '/authentication/register', bodyString, options) // ...using post request
+        return this.http.get(this.URL + '/filesystem/folders')
+            .timeout(this.timeOute)
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
     };
-    PostService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
-    ], PostService);
+    PostService.prototype.addUser = function (email, password) {
+        var body = JSON.stringify({ "email": email, "password": password });
+        var headers = this.headerTemplate;
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.SEKurl + '/authentication/register', body, options)
+            .timeout(this.timeOute)
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
+    };
+    PostService.prototype.userLogin = function (email, password) {
+        var body = JSON.stringify({ "email": email, "password": password });
+        var headers = this.headerTemplate;
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this.http.post(this.SEKurl + '/authentication/login', body, options)
+            .timeout(this.timeOute)
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
+    };
+    PostService.prototype.getFileByID = function (id) {
+        var body = { id: id };
+        return makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, authentication);
+    };
     return PostService;
 }());
+PostService = __decorate([
+    core_1.Injectable(),
+    __metadata("design:paramtypes", [http_1.Http])
+], PostService);
 exports.PostService = PostService;
 //# sourceMappingURL=post.services.js.map

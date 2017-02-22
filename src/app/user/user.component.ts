@@ -12,6 +12,7 @@ export class UserComponent  {
   path: string;
   mime: mimeInterface;
 
+
   // Class constructor
   constructor(private postService : PostService){
     console.log('User initialized...');
@@ -21,7 +22,8 @@ export class UserComponent  {
 ***************  API CALL *************************
       Returns observable,  Use subscribe method
 */
-    this.postService.addUser ().subscribe(posts => {
+
+    this.postService.addUser ("dksdsddssdskjdds", "sddfsjsdd").subscribe(posts => {
       //Process Data
       console.log(posts);
       () => console.log('END');
