@@ -14,14 +14,14 @@ var Observable_1 = require('rxjs/Observable');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 require('rxjs/add/operator/timeout');
-var PostService = (function () {
-    function PostService(http) {
+var APIService = (function () {
+    function APIService(http) {
         this.http = http;
         this.URL = 'http://172.17.0.2:8080';
         this.timeOut = 3000;
         console.log('Postservice initialized...');
     }
-    PostService.prototype.makeRequest = function (method, path, body, authorization) {
+    APIService.prototype.makeRequest = function (method, path, body, authorization) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         headers.append('Access-Control-Allow-Origin', '*');
         // authentication
@@ -43,34 +43,34 @@ var PostService = (function () {
     // *************************   USER ACCOUNT ********************************
     // Creates a new user and returns a jws
     // var body = {"email": "userEmail","password": "userPassword"};
-    PostService.prototype.postUserAdd = function (email, password) {
+    APIService.prototype.postUserAdd = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
         return this.makeRequest(http_1.RequestMethod.Post, '/authentication/register', body, null);
     };
     // INPUT: User Name & Password
     // OUTPUT:  returns a id_token
-    PostService.prototype.postUserLogin = function (email, password) {
+    APIService.prototype.postUserLogin = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
         return this.makeRequest(http_1.RequestMethod.Post, '/authentication/login', body, null);
     };
     // *************************   FOLDERS   ********************************
     //  INPUT: id_token  OUTPUT: JSON of all folders
     //  OUTPUT: Array of all folders
-    PostService.prototype.getALLFolders = function (authorization) {
+    APIService.prototype.getALLFolders = function (authorization) {
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, authorization);
     };
     // *************************   FILES   ********************************
     // INPUT: file id
     // OUTPUT: file
-    PostService.prototype.getFileByID = function (id, authentication) {
+    APIService.prototype.getFileByID = function (id, authentication) {
         var body = JSON.stringify({ id: id });
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, authentication);
     };
-    PostService = __decorate([
+    APIService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], PostService);
-    return PostService;
+    ], APIService);
+    return APIService;
 }());
-exports.PostService = PostService;
-//# sourceMappingURL=post.services.js.map
+exports.APIService = APIService;
+//# sourceMappingURL=api.services.js.map

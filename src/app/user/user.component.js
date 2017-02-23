@@ -8,31 +8,55 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require("@angular/core");
-var post_services_1 = require("../services/post.services");
+var core_1 = require('@angular/core');
+var api_services_1 = require('../services/api.services');
+var jwt_services_1 = require('../services/jwt.services');
 var UserComponent = (function () {
-    function UserComponent(postService) {
-        this.postService = postService;
+    // Class constructor
+    function UserComponent(apiService, jwtService) {
+        var _this = this;
+        this.apiService = apiService;
+        this.jwtService = jwtService;
         console.log('User initialized...');
-        this.postService.addUser("dksdsddssdskjdds", "sddfsjsdd").subscribe(function (posts) {
-            console.log(posts);
+        var user = 'sean@mcglincy.com';
+        var pass = 'hunter322';
+        /*
+        ***************  API CALL *************************
+              Returns observable,  Use subscribe method
+        */
+        this.apiService.postUserLogin(user, pass).subscribe(function (data) {
+            //Process Data
+            // console.log(data);
+            // console.log(data.jwt);
+            _this.jwtService.saveJwt(data.jwt);
+            // console.log(this.jwtService.getJwt());
             (function () { return console.log('END'); });
         });
+        var jwt = this.jwtService.getJwt();
+        this.apiService.getALLFolders(jwt).subscribe(function (data) {
+            //Process Data
+            console.log(data);
+            // console.log(data.jwt);
+            // this.jwtService.saveJwt(data.jwt);
+            // console.log(this.jwtService.getJwt());
+            (function () { return console.log('END'); });
+        });
+        // Variables
         this.file_name = '';
         this.path = '';
         this.mime = {
             type: '',
         };
     }
+    UserComponent = __decorate([
+        core_1.Component({
+            selector: 'sekure-user',
+            template: "<h1>Hello</h1>",
+            providers: [api_services_1.APIService, jwt_services_1.JWTServices]
+        }), 
+        __metadata('design:paramtypes', [api_services_1.APIService, jwt_services_1.JWTServices])
+    ], UserComponent);
     return UserComponent;
 }());
-UserComponent = __decorate([
-    core_1.Component({
-        selector: 'sekure-user',
-        template: "<h1>Hello</h1>",
-        providers: [post_services_1.PostService]
-    }),
-    __metadata("design:paramtypes", [post_services_1.PostService])
-], UserComponent);
 exports.UserComponent = UserComponent;
 //# sourceMappingURL=user.component.js.map

@@ -1,9 +1,11 @@
+
 import { Component } from '@angular/core';
-import {PostService} from '../services/post.services';
+import {APIService} from '../services/api.services';
+import {JWTServices} from '../services/jwt.services';
 @Component({
   selector: 'sekure-user',
   template: `<h1>Hello</h1>`,
-  providers: [PostService]
+  providers: [APIService, JWTServices]
 })
 export class UserComponent  {
   // Class Variables
@@ -14,20 +16,37 @@ export class UserComponent  {
 
 
   // Class constructor
-  constructor(private postService : PostService){
+  constructor(private apiService : APIService, private jwtService : JWTServices){
     console.log('User initialized...');
 
+    var user = 'sean@mcglincy.com';
+    var pass = 'hunter322';
 
 /*
 ***************  API CALL *************************
       Returns observable,  Use subscribe method
 */
 
-    this.postService.addUser ("dksdsddssdskjdds", "sddfsjsdd").subscribe(posts => {
+
+    this.apiService.postUserLogin (user, pass).subscribe(data => {
       //Process Data
-      console.log(posts);
+      // console.log(data);
+      // console.log(data.jwt);
+      this.jwtService.saveJwt(data.jwt);
+      // console.log(this.jwtService.getJwt());
       () => console.log('END');
     });
+
+    var jwt = this.jwtService.getJwt();
+    this.apiService.getALLFolders(jwt).subscribe(data => {
+      //Process Data
+      console.log(data);
+      // console.log(data.jwt);
+      // this.jwtService.saveJwt(data.jwt);
+      // console.log(this.jwtService.getJwt());
+      () => console.log('END');
+    });
+
 
     // Variables
     this.file_name = '';
@@ -36,6 +55,8 @@ export class UserComponent  {
       type: '',
     }
   }
+
+
 }
 // Structure for the mime interface
 interface mimeInterface{
