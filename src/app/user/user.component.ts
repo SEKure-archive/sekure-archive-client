@@ -9,7 +9,7 @@ import {JWTServices} from '../services/jwt.services';
 })
 export class UserComponent  {
   // Class Variables
-  PostService: PostService;
+  // PostService: PostService;
   file_name: string;
   path: string;
   mime: mimeInterface;
@@ -28,12 +28,9 @@ export class UserComponent  {
 */
 
 
-    this.apiService.postUserLogin (user, pass).subscribe(data => {
+    this.apiService.userLogin (user, pass).subscribe(data => {
       //Process Data
-      // console.log(data);
-      // console.log(data.jwt);
       this.jwtService.saveJwt(data.jwt);
-      // console.log(this.jwtService.getJwt());
       () => console.log('END');
     });
 
@@ -41,9 +38,6 @@ export class UserComponent  {
     this.apiService.getALLFolders(jwt).subscribe(data => {
       //Process Data
       console.log(data);
-      // console.log(data.jwt);
-      // this.jwtService.saveJwt(data.jwt);
-      // console.log(this.jwtService.getJwt());
       () => console.log('END');
     });
 

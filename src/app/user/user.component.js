@@ -24,21 +24,15 @@ var UserComponent = (function () {
         ***************  API CALL *************************
               Returns observable,  Use subscribe method
         */
-        this.apiService.postUserLogin(user, pass).subscribe(function (data) {
+        this.apiService.userLogin(user, pass).subscribe(function (data) {
             //Process Data
-            // console.log(data);
-            // console.log(data.jwt);
             _this.jwtService.saveJwt(data.jwt);
-            // console.log(this.jwtService.getJwt());
             (function () { return console.log('END'); });
         });
         var jwt = this.jwtService.getJwt();
         this.apiService.getALLFolders(jwt).subscribe(function (data) {
             //Process Data
             console.log(data);
-            // console.log(data.jwt);
-            // this.jwtService.saveJwt(data.jwt);
-            // console.log(this.jwtService.getJwt());
             (function () { return console.log('END'); });
         });
         // Variables

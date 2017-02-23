@@ -13,11 +13,13 @@ var core_1 = require('@angular/core');
 var JWTServices = (function () {
     function JWTServices() {
     }
+    // Saves the token as a string
     JWTServices.prototype.saveJwt = function (jwt) {
         if (jwt) {
             localStorage.setItem('id_token', jwt);
         }
     };
+    // Returns the token as string
     JWTServices.prototype.getJwt = function () {
         return localStorage.getItem('id_token');
     };

@@ -14,6 +14,12 @@ var Observable_1 = require('rxjs/Observable');
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/catch');
 require('rxjs/add/operator/timeout');
+/*
+RESPONCE  CODES
+200  SUCCESS
+400	 Invalid JSON
+403	 INVALID TOKEN /Email is already in use
+*/
 var APIService = (function () {
     function APIService(http) {
         this.http = http;
@@ -21,13 +27,15 @@ var APIService = (function () {
         this.timeOut = 3000;
         console.log('Postservice initialized...');
     }
+    // Submits all API calls
     APIService.prototype.makeRequest = function (method, path, body, authorization) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         headers.append('Access-Control-Allow-Origin', '*');
-        // authentication
+        // authentication not null
         if (authorization) {
             headers.append('authorization', authorization);
         }
+        //Data
         var options = new http_1.RequestOptions({
             url: this.URL + path,
             body: body,
@@ -43,28 +51,55 @@ var APIService = (function () {
     // *************************   USER ACCOUNT ********************************
     // Creates a new user and returns a jws
     // var body = {"email": "userEmail","password": "userPassword"};
-    APIService.prototype.postUserAdd = function (email, password) {
+    APIService.prototype.userAdd = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
         return this.makeRequest(http_1.RequestMethod.Post, '/authentication/register', body, null);
     };
     // INPUT: User Name & Password
     // OUTPUT:  returns a id_token
-    APIService.prototype.postUserLogin = function (email, password) {
+    APIService.prototype.userLogin = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
         return this.makeRequest(http_1.RequestMethod.Post, '/authentication/login', body, null);
     };
     // *************************   FOLDERS   ********************************
+    // INPUT: folder path
+    // OUTPUT: folder id
+    APIService.prototype.getFolderID = function (path, authentication) {
+        var body = JSON.stringify({ 'path': path });
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folder', body, authentication);
+    };
+    // INPUT: folder path
+    // OUTPUT: folder id
+    APIService.prototype.postFolder = function (path, authentication) {
+        var body = JSON.stringify({ 'path': path });
+        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, authentication);
+    };
+    // *************************  Multiple   FOLDERS   **************************
     //  INPUT: id_token  OUTPUT: JSON of all folders
     //  OUTPUT: Array of all folders
     APIService.prototype.getALLFolders = function (authorization) {
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, authorization);
     };
-    // *************************   FILES   ********************************
+    // *************************  Single  FILES   ********************************
     // INPUT: file id
-    // OUTPUT: file
+    // OUTPUT: file id : number, folder_id: number, name: string, mime: string
     APIService.prototype.getFileByID = function (id, authentication) {
         var body = JSON.stringify({ id: id });
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, authentication);
+    };
+    // INPUT: folder id and file name
+    // OUTPUT: file id
+    APIService.prototype.postFile = function (folder_id, fileName, authentication) {
+        var body = JSON.stringify({ folder_id: folder_id, name: fileName });
+        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, authentication);
+    };
+    // ************************* Multiple  FILES   ********************************
+    // INPUT: file id
+    // OOUTPUT: Array of files with ID
+    // OUTPUT: file id : number, folder_id: number, name: string, mime: string
+    APIService.prototype.getFilesWithID = function (id, authentication) {
+        var body = JSON.stringify({ id: id });
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/files', body, authentication);
     };
     APIService = __decorate([
         core_1.Injectable(), 
