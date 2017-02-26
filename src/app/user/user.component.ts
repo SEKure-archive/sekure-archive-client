@@ -1,11 +1,11 @@
 
 import { Component } from '@angular/core';
-import {APIService} from '../services/api.services';
-import {JWTServices} from '../services/jwt.services';
+import {APIService} from '../services/api';
+
 @Component({
   selector: 'sekure-user',
   template: `<h1>Hello</h1>`,
-  providers: [APIService, JWTServices]
+  providers: [APIService]
 })
 export class UserComponent  {
   // Class Variables
@@ -16,7 +16,7 @@ export class UserComponent  {
 
 
   // Class constructor
-  constructor(private apiService : APIService, private jwtService : JWTServices){
+  constructor(private apiService : APIService){
     console.log('User initialized...');
 
     var user = 'sean@mcglincy.com';
@@ -28,18 +28,18 @@ export class UserComponent  {
 */
 
 
-    this.apiService.userLogin (user, pass).subscribe(data => {
-      //Process Data
-      this.jwtService.saveJwt(data.jwt);
-      () => console.log('END');
-    });
-
-    var jwt = this.jwtService.getJwt();
-    this.apiService.getALLFolders(jwt).subscribe(data => {
-      //Process Data
-      console.log(data);
-      () => console.log('END');
-    });
+    // this.apiService.userLogin (user, pass).subscribe(data => {
+    //   //Process Data
+    //   this.jwtService.saveJwt(data.jwt);
+    //   () => console.log('END');
+    // });
+    //
+    // var jwt = this.jwtService.getJwt();
+    // this.apiService.getALLFolders(jwt).subscribe(data => {
+    //   //Process Data
+    //   console.log(data);
+    //   () => console.log('END');
+    // });
 
 
     // Variables

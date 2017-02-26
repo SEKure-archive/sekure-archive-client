@@ -10,18 +10,28 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var AppComponent = (function () {
-    function AppComponent(router) {
+var api_1 = require('../../services/api');
+// import {AuthenticationService} from '../../services/authentication';
+var Home = (function () {
+    function Home(router) {
         this.router = router;
+        console.log(localStorage.getItem('Home Page'));
+        console.log(localStorage.getItem('id_token'));
     }
-    AppComponent = __decorate([
+    Home.prototype.logout = function () {
+        // this.authentication.authLogOut();
+    };
+    Home = __decorate([
         core_1.Component({
-            selector: 'my-app',
-            template: "<router-outlet></router-outlet>",
+            moduleId: module.id,
+            selector: 'home',
+            templateUrl: 'home.html',
+            // template : `   <h1> HOME PAGE</h1>`,
+            providers: [api_1.APIService]
         }), 
         __metadata('design:paramtypes', [router_1.Router])
-    ], AppComponent);
-    return AppComponent;
+    ], Home);
+    return Home;
 }());
-exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map
+exports.Home = Home;
+//# sourceMappingURL=home.js.map

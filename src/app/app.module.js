@@ -14,20 +14,27 @@ var platform_browser_1 = require('@angular/platform-browser');
 var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 // providers
-// import { AuthGuard } from './common/auth.guard';
+var authguard_1 = require('./routes/authguard');
 // import { AUTH_PROVIDERS } from 'angular2-jwt';  //File not found
+var api_1 = require('./services/api');
+// import { AuthenticationService } from './services/authentication';
 //Routes for Components
 var app_component_1 = require('./app.component');
-var user_component_1 = require('./user/user.component');
+// import {UserComponent} from './user/user.component';
+// Pages
+var routes_1 = require('./routes/routes');
+var home_1 = require('./public/home/home');
+var login_1 = require('./public/login/login');
+// import { Signup } from './pages/signup/signup';
 var AppModule = (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         core_1.NgModule({
-            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule],
-            // providers: [  AUTH_PROVIDERS],
-            declarations: [app_component_1.AppComponent, user_component_1.UserComponent],
-            bootstrap: [app_component_1.AppComponent, user_component_1.UserComponent] //Declare to use in main html
+            imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, http_1.HttpModule, routes_1.routing],
+            providers: [authguard_1.AuthGuard, api_1.APIService],
+            declarations: [app_component_1.AppComponent, home_1.Home, login_1.Login],
+            bootstrap: [app_component_1.AppComponent] //Declare to use in main html
         }), 
         __metadata('design:paramtypes', [])
     ], AppModule);

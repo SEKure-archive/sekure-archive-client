@@ -33,7 +33,7 @@ var APIService = (function () {
         headers.append('Access-Control-Allow-Origin', '*');
         // authentication not null
         if (authorization) {
-            headers.append('authorization', authorization);
+            headers.append('authorization', localStorage.getItem('id_token'));
         }
         //Data
         var options = new http_1.RequestOptions({
@@ -53,45 +53,45 @@ var APIService = (function () {
     // var body = {"email": "userEmail","password": "userPassword"};
     APIService.prototype.userAdd = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
-        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/register', body, null);
+        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/register', body, false);
     };
     // INPUT: User Name & Password
     // OUTPUT:  returns a id_token
     APIService.prototype.userLogin = function (email, password) {
         var body = JSON.stringify({ "email": email, "password": password });
-        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/login', body, null);
+        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/login', body, false);
     };
     // *************************   FOLDERS   ********************************
     // INPUT: folder path
     // OUTPUT: folder id
     APIService.prototype.getFolderID = function (path, authentication) {
         var body = JSON.stringify({ 'path': path });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folder', body, authentication);
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folder', body, true);
     };
     // INPUT: folder path
     // OUTPUT: folder id
     APIService.prototype.postFolder = function (path, authentication) {
         var body = JSON.stringify({ 'path': path });
-        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, authentication);
+        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
     };
     // *************************  Multiple   FOLDERS   **************************
     //  INPUT: id_token  OUTPUT: JSON of all folders
     //  OUTPUT: Array of all folders
     APIService.prototype.getALLFolders = function (authorization) {
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, authorization);
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, true);
     };
     // *************************  Single  FILES   ********************************
     // INPUT: file id
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
     APIService.prototype.getFileByID = function (id, authentication) {
         var body = JSON.stringify({ id: id });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, authentication);
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, true);
     };
     // INPUT: folder id and file name
     // OUTPUT: file id
     APIService.prototype.postFile = function (folder_id, fileName, authentication) {
         var body = JSON.stringify({ folder_id: folder_id, name: fileName });
-        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, authentication);
+        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
     };
     // ************************* Multiple  FILES   ********************************
     // INPUT: file id
@@ -99,7 +99,6 @@ var APIService = (function () {
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
     APIService.prototype.getFilesWithID = function (id, authentication) {
         var body = JSON.stringify({ id: id });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/files', body, authentication);
     };
     APIService = __decorate([
         core_1.Injectable(), 
@@ -108,4 +107,4 @@ var APIService = (function () {
     return APIService;
 }());
 exports.APIService = APIService;
-//# sourceMappingURL=api.services.js.map
+//# sourceMappingURL=api.js.map

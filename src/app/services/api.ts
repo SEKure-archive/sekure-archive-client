@@ -6,6 +6,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/timeout';
 
+
 /*
 RESPONCE  CODES
 200  SUCCESS
@@ -24,13 +25,14 @@ export class APIService{
   }
 
   // Submits all API calls
-  private makeRequest (method : RequestMethod, path : string, body : string, authorization: string){
+  private makeRequest (method : RequestMethod, path : string, body : string, authorization: boolean){
     let headers      = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Access-Control-Allow-Origin', '*');
 
     // authentication not null
+
     if (authorization){
-      headers.append('authorization', authorization);
+      headers.append('authorization', localStorage.getItem('id_token'));
     }
 
     //Data
@@ -53,34 +55,34 @@ export class APIService{
   // var body = {"email": "userEmail","password": "userPassword"};
   userAdd (email : string , password :string) {
     var body = JSON.stringify({"email": email,"password": password});
-    return this.makeRequest(RequestMethod.Post, '/authentication/register', body, null);
+    return this.makeRequest(RequestMethod.Post, '/authentication/register', body, false);
   }
 
   // INPUT: User Name & Password
   // OUTPUT:  returns a id_token
   userLogin (email :string, password : string) {
     var body = JSON.stringify({"email": email,"password": password});
-    return this.makeRequest(RequestMethod.Post, '/authentication/login', body, null);
+    return this.makeRequest(RequestMethod.Post, '/authentication/login', body, false);
   }
   // *************************   FOLDERS   ********************************
   // INPUT: folder path
   // OUTPUT: folder id
   getFolderID (path:	string, authentication : string) {
     var body = JSON.stringify({'path' : path});
-    return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, authentication);
+    return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, true);
   }
   // INPUT: folder path
   // OUTPUT: folder id
   postFolder ( path : string ,authentication : string) {
     var body = JSON.stringify({'path' : path});
-    return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, authentication);
+    return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, true);
   }
 
   // *************************  Multiple   FOLDERS   **************************
   //  INPUT: id_token  OUTPUT: JSON of all folders
   //  OUTPUT: Array of all folders
   getALLFolders(authorization : string){
-    return this.makeRequest(RequestMethod.Get, '/filesystem/folders', null, authorization);
+    return this.makeRequest(RequestMethod.Get, '/filesystem/folders', null, true);
   }
 
   // *************************  Single  FILES   ********************************
@@ -89,13 +91,13 @@ export class APIService{
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
   getFileByID (id:	number, authentication : string) {
     var body = JSON.stringify({id: id});
-    return this.makeRequest(RequestMethod.Get, '/filesystem/file', body, authentication);
+    return this.makeRequest(RequestMethod.Get, '/filesystem/file', body, true);
   }
   // INPUT: folder id and file name
   // OUTPUT: file id
   postFile (folder_id:	number, fileName : string ,authentication : string) {
     var body = JSON.stringify({folder_id: folder_id, name: fileName});
-    return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, authentication);
+    return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, true);
   }
 
   // ************************* Multiple  FILES   ********************************
@@ -105,7 +107,6 @@ export class APIService{
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
   getFilesWithID (id:	number, authentication : string) {
     var body = JSON.stringify({id: id});
-    return this.makeRequest(RequestMethod.Get, '/filesystem/files', body, authentication);
   }
 
 }

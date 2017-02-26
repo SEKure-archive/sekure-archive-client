@@ -9,14 +9,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var api_services_1 = require('../services/api.services');
-var jwt_services_1 = require('../services/jwt.services');
+var api_1 = require('../services/api');
 var UserComponent = (function () {
     // Class constructor
-    function UserComponent(apiService, jwtService) {
-        var _this = this;
+    function UserComponent(apiService) {
         this.apiService = apiService;
-        this.jwtService = jwtService;
         console.log('User initialized...');
         var user = 'sean@mcglincy.com';
         var pass = 'hunter322';
@@ -24,17 +21,18 @@ var UserComponent = (function () {
         ***************  API CALL *************************
               Returns observable,  Use subscribe method
         */
-        this.apiService.userLogin(user, pass).subscribe(function (data) {
-            //Process Data
-            _this.jwtService.saveJwt(data.jwt);
-            (function () { return console.log('END'); });
-        });
-        var jwt = this.jwtService.getJwt();
-        this.apiService.getALLFolders(jwt).subscribe(function (data) {
-            //Process Data
-            console.log(data);
-            (function () { return console.log('END'); });
-        });
+        // this.apiService.userLogin (user, pass).subscribe(data => {
+        //   //Process Data
+        //   this.jwtService.saveJwt(data.jwt);
+        //   () => console.log('END');
+        // });
+        //
+        // var jwt = this.jwtService.getJwt();
+        // this.apiService.getALLFolders(jwt).subscribe(data => {
+        //   //Process Data
+        //   console.log(data);
+        //   () => console.log('END');
+        // });
         // Variables
         this.file_name = '';
         this.path = '';
@@ -46,9 +44,9 @@ var UserComponent = (function () {
         core_1.Component({
             selector: 'sekure-user',
             template: "<h1>Hello</h1>",
-            providers: [api_services_1.APIService, jwt_services_1.JWTServices]
+            providers: [api_1.APIService]
         }), 
-        __metadata('design:paramtypes', [api_services_1.APIService, jwt_services_1.JWTServices])
+        __metadata('design:paramtypes', [api_1.APIService])
     ], UserComponent);
     return UserComponent;
 }());

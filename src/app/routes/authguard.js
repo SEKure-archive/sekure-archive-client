@@ -9,25 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-// store file {jwt : keyString}
-var JWTServices = (function () {
-    function JWTServices() {
+var router_1 = require('@angular/router');
+// import {tokenNotExpired} from 'angular2-jwt';
+// import {AuthenticationService} from '../services/authentication'
+var AuthGuard = (function () {
+    function AuthGuard(router) {
+        this.router = router;
     }
-    // Saves the token as a string
-    JWTServices.prototype.saveJwt = function (jwt) {
-        if (jwt) {
-            localStorage.setItem('id_token', jwt);
+    AuthGuard.prototype.canActivate = function () {
+        // re-write not to use library.
+        // Check time stamp and if it's been tampered
+        if (localStorage.getItem('id_token')) {
+            return true; // add more security
+        }
+        else {
+            this.router.navigate(["login"]);
+            return false;
         }
     };
-    // Returns the token as string
-    JWTServices.prototype.getJwt = function () {
-        return localStorage.getItem('id_token');
-    };
-    JWTServices = __decorate([
+    AuthGuard = __decorate([
         core_1.Injectable(), 
-        __metadata('design:paramtypes', [])
-    ], JWTServices);
-    return JWTServices;
+        __metadata('design:paramtypes', [router_1.Router])
+    ], AuthGuard);
+    return AuthGuard;
 }());
-exports.JWTServices = JWTServices;
-//# sourceMappingURL=jwt.services.js.map
+exports.AuthGuard = AuthGuard;
+//# sourceMappingURL=authguard.js.map
