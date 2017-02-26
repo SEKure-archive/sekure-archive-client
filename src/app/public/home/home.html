@@ -1,7 +1,17 @@
 <div>
- <div class="home jumbotron centered">
-   <h1> HOME PAGE</h1>
-   <h1> Success</h1>
-   <p><a class="btn btn-primary btn-lg" role="button" (click)="logout()">Logout</a></p>
- </div>
+  <div class="home jumbotron centered text-center">
+    <h1> HOME PAGE</h1>
+    <h1> Success</h1>
+    <p><a class="btn btn-primary btn-lg text-center" role="button" (click)="logout()">Logout</a></p>
+  </div>
+  <div class="text-center">
+    <h3>Folders</h3>
+
+    <div *ngFor= "let folder of folders; let i = index">
+
+      <button class="btn btn-default" (click)="loadFile(folder.id)">{{folder.path}}</button>
+
+    </div>
+
+  </div>
 </div>

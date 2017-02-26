@@ -15,9 +15,7 @@ var forms_1 = require('@angular/forms');
 var http_1 = require('@angular/http');
 // providers
 var authguard_1 = require('./routes/authguard');
-// import { AUTH_PROVIDERS } from 'angular2-jwt';  //File not found
 var api_1 = require('./services/api');
-// import { AuthenticationService } from './services/authentication';
 //Routes for Components
 var app_component_1 = require('./app.component');
 // import {UserComponent} from './user/user.component';
@@ -25,7 +23,6 @@ var app_component_1 = require('./app.component');
 var routes_1 = require('./routes/routes');
 var home_1 = require('./public/home/home');
 var login_1 = require('./public/login/login');
-// import { Signup } from './pages/signup/signup';
 var AppModule = (function () {
     function AppModule() {
     }

@@ -1,6 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-// import {AuthenticationService} from '../../services/authentication';
 import {APIService} from '../../services/api';
 
 @Component({
@@ -11,42 +10,70 @@ import {APIService} from '../../services/api';
 })
 
 
-export class Login{
-  private loggedIN :boolean;
+export class Login implements OnInit{
+  private showLogin: boolean;
 
   constructor(public router: Router, private apiService:APIService){
-    this.loggedIN= false;
+    this.showLogin= true;
+  }
+  ngOnInit(){
+    // Check JWT when page loaded
+    localStorage.getItem('id_token');
+    this.router.navigate(['home']);
   }
 
   isLoggedIn(){
-    return this.loggedIN;
+    // return this.loggedIN;
   }
 
-  signup(formSubmit : Event){
-    formSubmit.preventDefault();  // prevents default form from HTML.   See login.html
-    this.router.navigate(['signup']);
+  private toggleLogin(){
+    if(this.showLogin == true){
+      this.showLogin = false;
+    } else{
+      this.showLogin = true;
+    }
   }
-
-
-  login(formSubmit : Event, username: string, password: string){
+  formSubmitted(formSubmit : Event, username: string, password: string){
     formSubmit.preventDefault();  // prevents default form from HTML.   See login.html
-
-
     // Check user input Here
     // Salt password
+    if(this.showLogin){
+      this.login(username, password);
+    } else {
+      this.signup(username, password);
+    }
 
+  }
+
+  private login(username: string, password: string){
     this.apiService.userLogin(username, password)
     .subscribe(
-      token =>{
+      data =>{
         console.log('Success: logged in....');
-        console.log(token);
-        localStorage.setItem('id_token', token);
-        this.loggedIN = true;
+        console.log(data);
+        localStorage.setItem('id_token', data.jwt);
         this.router.navigate(['home']);
       },
 
       err => {
-        this.loggedIN = false;
+        localStorage.removeItem('id_token');
+        alert('Login failed');
+        this.router.navigate(['login']);
+      });
+  }
+
+
+  private signup(username: string, password: string){
+    this.apiService.userAdd(username, password)
+    .subscribe(
+      data =>{
+        console.log('Success: logged in....');
+        console.log(data);
+        localStorage.setItem('id_token', data.jwt);
+        this.router.navigate(['home']);
+      },
+
+      err => {
         localStorage.removeItem('id_token');
         alert('Login failed');
         this.router.navigate(['login']);

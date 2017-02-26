@@ -10,35 +10,63 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-// import {AuthenticationService} from '../../services/authentication';
 var api_1 = require('../../services/api');
 var Login = (function () {
     function Login(router, apiService) {
         this.router = router;
         this.apiService = apiService;
-        this.loggedIN = false;
+        this.showLogin = true;
     }
+    Login.prototype.ngOnInit = function () {
+        // Check JWT when page loaded
+        localStorage.getItem('id_token');
+        this.router.navigate(['home']);
+    };
     Login.prototype.isLoggedIn = function () {
-        return this.loggedIN;
+        // return this.loggedIN;
     };
-    Login.prototype.signup = function (formSubmit) {
-        formSubmit.preventDefault(); // prevents default form from HTML.   See login.html
-        this.router.navigate(['signup']);
+    Login.prototype.toggleLogin = function () {
+        if (this.showLogin == true) {
+            this.showLogin = false;
+        }
+        else {
+            this.showLogin = true;
+        }
     };
-    Login.prototype.login = function (formSubmit, username, password) {
-        var _this = this;
+    Login.prototype.formSubmitted = function (formSubmit, username, password) {
         formSubmit.preventDefault(); // prevents default form from HTML.   See login.html
         // Check user input Here
         // Salt password
+        if (this.showLogin) {
+            this.login(username, password);
+        }
+        else {
+            this.signup(username, password);
+        }
+    };
+    Login.prototype.login = function (username, password) {
+        var _this = this;
         this.apiService.userLogin(username, password)
-            .subscribe(function (token) {
+            .subscribe(function (data) {
             console.log('Success: logged in....');
-            console.log(token);
-            localStorage.setItem('id_token', token);
-            _this.loggedIN = true;
+            console.log(data);
+            localStorage.setItem('id_token', data.jwt);
             _this.router.navigate(['home']);
         }, function (err) {
-            _this.loggedIN = false;
+            localStorage.removeItem('id_token');
+            alert('Login failed');
+            _this.router.navigate(['login']);
+        });
+    };
+    Login.prototype.signup = function (username, password) {
+        var _this = this;
+        this.apiService.userAdd(username, password)
+            .subscribe(function (data) {
+            console.log('Success: logged in....');
+            console.log(data);
+            localStorage.setItem('id_token', data.jwt);
+            _this.router.navigate(['home']);
+        }, function (err) {
             localStorage.removeItem('id_token');
             alert('Login failed');
             _this.router.navigate(['login']);

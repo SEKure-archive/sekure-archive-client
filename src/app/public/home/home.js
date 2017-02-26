@@ -11,25 +11,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var api_1 = require('../../services/api');
-// import {AuthenticationService} from '../../services/authentication';
 var Home = (function () {
-    function Home(router) {
+    function Home(router, apiService) {
         this.router = router;
-        console.log(localStorage.getItem('Home Page'));
+        this.apiService = apiService;
+        console.log('Starting Home Page');
         console.log(localStorage.getItem('id_token'));
     }
+    Home.prototype.ngOnInit = function () {
+        var _this = this;
+        console.log('Firing Homepage On Init');
+        this.apiService.getALLFolders().subscribe(function (data) {
+            console.log(data);
+            _this.folders = data.folders;
+        });
+    };
     Home.prototype.logout = function () {
-        // this.authentication.authLogOut();
+        localStorage.removeItem('id_token');
+        this.router.navigate(['login']);
     };
     Home = __decorate([
         core_1.Component({
             moduleId: module.id,
             selector: 'home',
             templateUrl: 'home.html',
-            // template : `   <h1> HOME PAGE</h1>`,
             providers: [api_1.APIService]
         }), 
-        __metadata('design:paramtypes', [router_1.Router])
+        __metadata('design:paramtypes', [router_1.Router, api_1.APIService])
     ], Home);
     return Home;
 }());

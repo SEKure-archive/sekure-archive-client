@@ -34,6 +34,8 @@ var APIService = (function () {
         // authentication not null
         if (authorization) {
             headers.append('authorization', localStorage.getItem('id_token'));
+            console.log('submit request');
+            console.log(localStorage.getItem('id_token'));
         }
         //Data
         var options = new http_1.RequestOptions({
@@ -64,32 +66,32 @@ var APIService = (function () {
     // *************************   FOLDERS   ********************************
     // INPUT: folder path
     // OUTPUT: folder id
-    APIService.prototype.getFolderID = function (path, authentication) {
+    APIService.prototype.getFolderID = function (path) {
         var body = JSON.stringify({ 'path': path });
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folder', body, true);
     };
     // INPUT: folder path
     // OUTPUT: folder id
-    APIService.prototype.postFolder = function (path, authentication) {
+    APIService.prototype.postFolder = function (path) {
         var body = JSON.stringify({ 'path': path });
         return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
     };
     // *************************  Multiple   FOLDERS   **************************
     //  INPUT: id_token  OUTPUT: JSON of all folders
     //  OUTPUT: Array of all folders
-    APIService.prototype.getALLFolders = function (authorization) {
+    APIService.prototype.getALLFolders = function () {
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, true);
     };
     // *************************  Single  FILES   ********************************
     // INPUT: file id
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-    APIService.prototype.getFileByID = function (id, authentication) {
+    APIService.prototype.getFileByID = function (id) {
         var body = JSON.stringify({ id: id });
         return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, true);
     };
     // INPUT: folder id and file name
     // OUTPUT: file id
-    APIService.prototype.postFile = function (folder_id, fileName, authentication) {
+    APIService.prototype.postFile = function (folder_id, fileName) {
         var body = JSON.stringify({ folder_id: folder_id, name: fileName });
         return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
     };
@@ -97,7 +99,7 @@ var APIService = (function () {
     // INPUT: file id
     // OOUTPUT: Array of files with ID
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-    APIService.prototype.getFilesWithID = function (id, authentication) {
+    APIService.prototype.getFilesWithID = function (id) {
         var body = JSON.stringify({ id: id });
     };
     APIService = __decorate([

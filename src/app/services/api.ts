@@ -33,6 +33,9 @@ export class APIService{
 
     if (authorization){
       headers.append('authorization', localStorage.getItem('id_token'));
+      console.log('submit request')
+      console.log(localStorage.getItem('id_token'))
+
     }
 
     //Data
@@ -67,13 +70,13 @@ export class APIService{
   // *************************   FOLDERS   ********************************
   // INPUT: folder path
   // OUTPUT: folder id
-  getFolderID (path:	string, authentication : string) {
+  getFolderID (path:	string) {
     var body = JSON.stringify({'path' : path});
     return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, true);
   }
   // INPUT: folder path
   // OUTPUT: folder id
-  postFolder ( path : string ,authentication : string) {
+  postFolder (path:	string) {
     var body = JSON.stringify({'path' : path});
     return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, true);
   }
@@ -81,7 +84,7 @@ export class APIService{
   // *************************  Multiple   FOLDERS   **************************
   //  INPUT: id_token  OUTPUT: JSON of all folders
   //  OUTPUT: Array of all folders
-  getALLFolders(authorization : string){
+  getALLFolders(){
     return this.makeRequest(RequestMethod.Get, '/filesystem/folders', null, true);
   }
 
@@ -89,13 +92,13 @@ export class APIService{
 
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFileByID (id:	number, authentication : string) {
+  getFileByID (id:	number) {
     var body = JSON.stringify({id: id});
     return this.makeRequest(RequestMethod.Get, '/filesystem/file', body, true);
   }
   // INPUT: folder id and file name
   // OUTPUT: file id
-  postFile (folder_id:	number, fileName : string ,authentication : string) {
+  postFile (folder_id:	number, fileName : string) {
     var body = JSON.stringify({folder_id: folder_id, name: fileName});
     return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, true);
   }
@@ -105,7 +108,7 @@ export class APIService{
   // INPUT: file id
   // OOUTPUT: Array of files with ID
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFilesWithID (id:	number, authentication : string) {
+  getFilesWithID (id:	number) {
     var body = JSON.stringify({id: id});
   }
 

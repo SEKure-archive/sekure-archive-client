@@ -7,9 +7,7 @@ import { RouterModule } from '@angular/router';
 
 // providers
 import { AuthGuard } from './routes/authguard';
-// import { AUTH_PROVIDERS } from 'angular2-jwt';  //File not found
 import { APIService } from './services/api';
-// import { AuthenticationService } from './services/authentication';
 
 //Routes for Components
 import { AppComponent }  from './app.component';
@@ -19,7 +17,6 @@ import { AppComponent }  from './app.component';
 import { routing } from './routes/routes';
 import { Home } from './public/home/home';
 import { Login } from './public/login/login';
-// import { Signup } from './pages/signup/signup';
 
 
 
