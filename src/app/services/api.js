@@ -23,11 +23,27 @@ RESPONCE  CODES
 var APIService = (function () {
     function APIService(http) {
         this.http = http;
-        this.URL = 'http://172.17.0.2:8080';
+        this.URL = 'http://localhost:8080';
         this.timeOut = 3000;
         console.log('Postservice initialized...');
     }
-    // Submits all API calls
+    /** Submits GET requests (which do not have a JSON body). */
+    APIService.prototype.getRequest = function (path, authorization) {
+        var headers = new http_1.Headers({ 'Access-Control-Allow-Origin': '*' });
+        if (authorization) {
+            var token = localStorage.getItem('id_token');
+            headers.append('authorization', token);
+        }
+        var options = new http_1.RequestOptions({
+            'url': this.URL + path,
+            'method': http_1.RequestMethod.Get,
+            'headers': headers,
+        });
+        return this.http.request(new http_1.Request(options))
+            .map(function (res) { return res.json(); })
+            .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
+    };
+    /** Submits non-GET requests (which *do* have a JSON body). */
     APIService.prototype.makeRequest = function (method, path, body, authorization) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         headers.append('Access-Control-Allow-Origin', '*');
@@ -48,7 +64,7 @@ var APIService = (function () {
             'headers': headers
         });
         console.log(body);
-        return this.http.request(new http_1.Request(options)).timeout(this.timeOut)
+        return this.http.request(new http_1.Request(options))
             .timeout(this.timeOut)
             .map(function (res) { return res.json(); })
             .catch(function (error) { return Observable_1.Observable.throw(error.json().error || 'Server error'); });
@@ -60,52 +76,51 @@ var APIService = (function () {
     // var body = {"email": "userEmail","password": "userPassword"};
     APIService.prototype.userAdd = function (email, password) {
         var body = JSON.stringify({ 'email': email, 'password': password });
-        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/register', body, false);
+        return this.makeRequest(http_1.RequestMethod.Post, '/users', body, false);
     };
     // INPUT: User Name & Password
     // OUTPUT:  returns a id_token
     APIService.prototype.userLogin = function (email, password) {
         var body = JSON.stringify({ 'email': email, 'password': password });
-        return this.makeRequest(http_1.RequestMethod.Post, '/authentication/login', body, false);
+        return this.makeRequest(http_1.RequestMethod.Post, '/login', body, false);
     };
     // *************************   FOLDERS   ********************************
     // INPUT: folder path
     // OUTPUT: folder id
-    APIService.prototype.getFolderID = function (path) {
-        var body = JSON.stringify({ 'path': path });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folder', body, true);
-    };
+    /*getFolderID(path:	string) {
+      var body = JSON.stringify({'path' : path});
+      return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, true);
+    }*/
     // INPUT: folder path
     // OUTPUT: folder id
     APIService.prototype.postFolder = function (path) {
         var body = JSON.stringify({ 'path': path });
-        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
+        return this.makeRequest(http_1.RequestMethod.Post, '/folders', body, true);
     };
     // *************************  Multiple   FOLDERS   **************************
     //  INPUT: id_token  OUTPUT: JSON of all folders
     //  OUTPUT: Array of all folders
     APIService.prototype.getALLFolders = function () {
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/folders', null, true);
+        return this.getRequest('/folders', true);
     };
     // *************************  Single  FILES   ********************************
     // INPUT: file id
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
     APIService.prototype.getFileByID = function (id) {
-        var body = JSON.stringify({ 'id': id });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/file', body, true);
+        return this.getRequest("/files/" + id, true);
     };
     // INPUT: folder id and file name
     // OUTPUT: file id
     APIService.prototype.postFile = function (folder_id, fileName) {
         var body = JSON.stringify({ 'folder_id': folder_id, name: fileName });
-        return this.makeRequest(http_1.RequestMethod.Post, '/filesystem/file', body, true);
+        return this.makeRequest(http_1.RequestMethod.Post, '/files', body, true);
     };
     // ************************* Multiple  FILES   ********************************
     // INPUT: file id
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
     APIService.prototype.getFilesWithID = function (id) {
         var body = JSON.stringify({ folder_id: id });
-        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/files', body, true);
+        return this.getRequest("/folders/" + id + "/files", true);
     };
     APIService = __decorate([
         core_1.Injectable(), 
