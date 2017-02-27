@@ -33,13 +33,11 @@ var Home = (function () {
     };
     //Load files when Folder clicked
     Home.prototype.loadFiiles = function (id) {
-        var _this = this;
         console.log('Firing Load Files');
         console.log(id);
         this.apiService.getFilesWithID(id).subscribe(function (data) {
             if (data) {
-                console.log(data.status);
-                _this.files = data.file;
+                console.log(data);
             }
         }, function (err) {
             alert('There was a problem loading the files.');

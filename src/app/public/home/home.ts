@@ -13,7 +13,7 @@ export class Home implements OnInit{
   private folders: string[];
   private folder: folderInterface;
 
-  private file : fileInterface[];
+  private files : fileInterface[];
   private file : fileInterface;
 
 
@@ -37,6 +37,8 @@ export class Home implements OnInit{
       });
     }
 
+
+
     //Load files when Folder clicked
     loadFiiles(id : number){
       console.log('Firing Load Files');
@@ -44,8 +46,8 @@ export class Home implements OnInit{
       this.apiService.getFilesWithID(id).subscribe(
         data => {
           if(data){
-            console.log(data.status);
-            this.files = data.file;
+            console.log(data);
+            // this.files = data.file;
           }
         },
         err => {
@@ -57,6 +59,8 @@ export class Home implements OnInit{
         localStorage.removeItem('id_token');
         this.router.navigate(['login']);
       }
+
+
     }
     // Interfaces
     interface folderInterface{

@@ -24,29 +24,34 @@ export class APIService{
     console.log('Postservice initialized...')
   }
 
+
   // Submits all API calls
   private makeRequest (method : RequestMethod, path : string, body : string, authorization: boolean){
     let headers      = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Access-Control-Allow-Origin', '*');
 
     // authentication not null
-
+    let token :string;
     if (authorization){
-      headers.append('authorization', localStorage.getItem('id_token'));
-      console.log('submit request')
-      console.log(localStorage.getItem('id_token'))
-
+      token = localStorage.getItem('id_token');
+      headers.append('authorization', token);
+      console.log('submit request');
+      console.log(token);
     }
+
+    console.log(headers);
 
     //Data
     let options = new RequestOptions({
-      url: this.URL + path,
-      body: body,  // accepts body as a json string
-      method: method,
-      headers: headers
+      'url': this.URL + path,
+      'body': body,  // accepts body as a json string
+      'method': method,
+      'headers': headers
     });
+    console.log(body);
 
     return this.http.request(new Request(options)).timeout(this.timeOut)
+    .timeout(this.timeOut)
     .map((res) => res.json())
     .catch((error:any) => Observable.throw(error.json().error || 'Server error'));;
   }
@@ -57,20 +62,20 @@ export class APIService{
   // Creates a new user and returns a jws
   // var body = {"email": "userEmail","password": "userPassword"};
   userAdd (email : string , password :string) {
-    var body = JSON.stringify({"email": email,"password": password});
+    var body = JSON.stringify({'email': email,'password': password});
     return this.makeRequest(RequestMethod.Post, '/authentication/register', body, false);
   }
 
   // INPUT: User Name & Password
   // OUTPUT:  returns a id_token
   userLogin (email :string, password : string) {
-    var body = JSON.stringify({"email": email,"password": password});
+    var body = JSON.stringify({'email': email,'password': password});
     return this.makeRequest(RequestMethod.Post, '/authentication/login', body, false);
   }
   // *************************   FOLDERS   ********************************
   // INPUT: folder path
   // OUTPUT: folder id
-  getFolderID (path:	string) {
+  getFolderID(path:	string) {
     var body = JSON.stringify({'path' : path});
     return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, true);
   }
@@ -92,14 +97,14 @@ export class APIService{
 
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFileByID (id:	number) {
-    var body = JSON.stringify({id: id});
+  getFileByID(id:	number) {
+    var body = JSON.stringify({'id': id});
     return this.makeRequest(RequestMethod.Get, '/filesystem/file', body, true);
   }
   // INPUT: folder id and file name
   // OUTPUT: file id
-  postFile (folder_id:	number, fileName : string) {
-    var body = JSON.stringify({folder_id: folder_id, name: fileName});
+  postFile(folder_id:	number, fileName : string) {
+    var body = JSON.stringify({'folder_id': folder_id, name: fileName});
     return this.makeRequest(RequestMethod.Post, '/filesystem/file', body, true);
   }
 
@@ -107,9 +112,10 @@ export class APIService{
 
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFilesWithID (folderID:	number) {
-    var body = JSON.stringify({folder_id: folderID});
+  getFilesWithID(id:	number) {
+    var body = JSON.stringify({folder_id: id});
     return this.makeRequest(RequestMethod.Get, '/filesystem/files', body, true);
   }
+
 
 }
