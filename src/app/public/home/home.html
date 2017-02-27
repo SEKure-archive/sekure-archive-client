@@ -7,9 +7,14 @@
   <div class="text-center">
     <h3>Folders</h3>
 
-    <div *ngFor= "let folder of folders; let i = index">
+    <div *ngFor= "let folder of folders">
 
-      <button class="btn btn-default" (click)="loadFile(folder.id)">{{folder.path}}</button>
+      <button (click)="loadFiiles(folder.id)" class="btn btn-default">{{folder.path}}</button>
+      <ul>
+        <div *ngFor= "let file of folders">
+          <p>{{file.name}} </p>
+        </div>
+      </ul>
 
     </div>
 

@@ -106,10 +106,10 @@ export class APIService{
   // ************************* Multiple  FILES   ********************************
 
   // INPUT: file id
-  // OOUTPUT: Array of files with ID
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFilesWithID (id:	number) {
-    var body = JSON.stringify({id: id});
+  getFilesWithID (folderID:	number) {
+    var body = JSON.stringify({folder_id: folderID});
+    return this.makeRequest(RequestMethod.Get, '/filesystem/files', body, true);
   }
 
 }

@@ -97,10 +97,10 @@ var APIService = (function () {
     };
     // ************************* Multiple  FILES   ********************************
     // INPUT: file id
-    // OOUTPUT: Array of files with ID
     // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-    APIService.prototype.getFilesWithID = function (id) {
-        var body = JSON.stringify({ id: id });
+    APIService.prototype.getFilesWithID = function (folderID) {
+        var body = JSON.stringify({ folder_id: folderID });
+        return this.makeRequest(http_1.RequestMethod.Get, '/filesystem/files', body, true);
     };
     APIService = __decorate([
         core_1.Injectable(), 

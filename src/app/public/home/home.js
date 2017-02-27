@@ -20,10 +20,29 @@ var Home = (function () {
     }
     Home.prototype.ngOnInit = function () {
         var _this = this;
+        // Load folder on page load
         console.log('Firing Homepage On Init');
         this.apiService.getALLFolders().subscribe(function (data) {
-            console.log(data);
-            _this.folders = data.folders;
+            if (data) {
+                console.log(data.status);
+                _this.folders = data.folders;
+            }
+        }, function (err) {
+            alert('There was a problem loading the folders.');
+        });
+    };
+    //Load files when Folder clicked
+    Home.prototype.loadFiiles = function (id) {
+        var _this = this;
+        console.log('Firing Load Files');
+        console.log(id);
+        this.apiService.getFilesWithID(id).subscribe(function (data) {
+            if (data) {
+                console.log(data.status);
+                _this.files = data.file;
+            }
+        }, function (err) {
+            alert('There was a problem loading the files.');
         });
     };
     Home.prototype.logout = function () {
