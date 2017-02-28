@@ -1,0 +1,22 @@
+.well {
+    width: 512px;
+    padding: 16px;
+}
+
+h2 {
+    margin: 0;
+    text-align: center;
+}
+
+.form-group {
+    margin: 8px 0;
+}
+
+.alert {
+    margin: 16px 0 0 0;
+    padding: 6px 10px;
+}
+
+.btn {
+    margin-top: 8px;
+}

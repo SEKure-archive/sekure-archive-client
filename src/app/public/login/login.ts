@@ -6,15 +6,18 @@ import {APIService} from '../../services/api';
   moduleId: module.id,  //Ignore error.  Needed to load templateUrl
   selector : 'login',
   templateUrl: 'login.html',
+  styleUrls: ['login.css'],
   providers: [APIService]
 })
 
 
 export class Login implements OnInit{
   private showLogin: boolean;
+  private error: string;
 
   constructor(public router: Router, private apiService:APIService){
     this.showLogin= true;
+    this.error = null;
   }
   ngOnInit(){
     // Check JWT when page loaded
@@ -32,6 +35,7 @@ export class Login implements OnInit{
     } else{
       this.showLogin = true;
     }
+    this.error = null;
   }
   formSubmitted(formSubmit : Event, username: string, password: string){
     formSubmit.preventDefault();  // prevents default form from HTML.   See login.html
@@ -57,13 +61,13 @@ export class Login implements OnInit{
 
       err => {
         localStorage.removeItem('id_token');
-        alert('Login failed');
+        this.error = 'Invalid username or password.';
         this.router.navigate(['login']);
       });
   }
 
 
-  private signup(username: string, password: string){
+  private signup(username: string, password: string) {
     this.apiService.userAdd(username, password)
     .subscribe(
       data =>{
@@ -75,7 +79,7 @@ export class Login implements OnInit{
 
       err => {
         localStorage.removeItem('id_token');
-        alert('Login failed');
+        this.error = 'Invalid username or password.';
         this.router.navigate(['login']);
       });
   }
