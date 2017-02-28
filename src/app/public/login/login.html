@@ -1,17 +1,21 @@
-<div class="well">
-  <h2>{{showLogin? "Login" : "Sign Up"}}</h2>
-  <form role="form" (submit)="formSubmitted($event, username.value, password.value)">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <input type="text" #username class="form-control" id="username" placeholder="Username">
+<div class="main">
+  <div class="wrapper">
+    <div class="well">
+      <h2>{{showLogin? "Login" : "Sign Up"}}</h2>
+      <form role="form" (submit)="formSubmitted($event, username.value, password.value)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" #username class="form-control" id="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" #password class="form-control" id="password" placeholder="Password">
+          <div *ngIf="error" class="alert alert-danger" role="alert"><b>Error:</b> {{error}}</div>
+        </div>
+        <a class="btn btn-default" (click)="toggleLogin()">{{showLogin? "Sign Up" : "Login"}}</a>
+        <button type="submit" class="btn btn-success pull-right">{{showLogin? "Login" : "Sign Up"}}</button>
+        <div class="clearfix"></div>
+      </form>
     </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" #password class="form-control" id="password" placeholder="Password">
-      <div *ngIf="error" class="alert alert-danger" role="alert"><b>Error:</b> {{error}}</div>
-    </div>
-    <a class="btn btn-default" (click)="toggleLogin()">{{showLogin? "Sign Up" : "Login"}}</a>
-    <button type="submit" class="btn btn-success pull-right">{{showLogin? "Login" : "Sign Up"}}</button>
-    <div class="clearfix"></div>
-  </form>
+  </div>
 </div>
