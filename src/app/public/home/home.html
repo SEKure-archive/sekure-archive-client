@@ -1,22 +1,22 @@
-<div>
-  <div class="home jumbotron centered text-center">
-    <h1> HOME PAGE</h1>
-    <h1> Success</h1>
-    <p><a class="btn btn-primary btn-lg text-center" role="button" (click)="logout()">Logout</a></p>
-  </div>
-  <div class="text-center">
-    <h3>Folders</h3>
-
-    <div *ngFor= "let folder of folders">
-
-      <button (click)="loadFiiles(folder.id)" class="btn btn-default">{{folder.path}}</button>
-      <ul>
-        <div *ngFor= "let file of folders">
-          <p>{{file.name}} </p>
-        </div>
-      </ul>
-
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/home#">SEKure Archive</a>
     </div>
-
+    <div class="nav navbar-right">
+      <p class="navbar-text">Logged in as: {{username}}</p>
+      <button type="submit" class="btn btn-default btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+<div class="text-center">
+  <h3>Folders</h3>
+  <div *ngFor= "let folder of folders">
+    <button (click)="loadFiiles(folder.id)" class="btn btn-default">{{folder.path}}</button>
+    <ul>
+      <div *ngFor= "let file of folders">
+        <p>{{file.name}}</p>
+      </div>
+    </ul>
   </div>
 </div>

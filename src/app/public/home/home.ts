@@ -7,10 +7,13 @@ import { UserService } from '../../services/user';
   moduleId: module.id,
   selector: 'home',
   templateUrl: 'home.html',
+  styleUrls: ['home.css'],
   providers: [APIService]
 })
 
 export class Home implements OnInit {
+  public username: string;
+
   private folders: string[];
   private folder: folderInterface;
 
@@ -20,6 +23,7 @@ export class Home implements OnInit {
   constructor(public router: Router, private api: APIService, private user: UserService) { }
 
   ngOnInit() {
+    this.username = this.user.getUsername();
     // Load folder on page load
     console.log('Firing Homepage On Init');
     this.api.getALLFolders().subscribe(
