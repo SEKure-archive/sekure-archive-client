@@ -62,7 +62,7 @@ export class Home implements OnInit {
   }
 
   showFiles(id: number){
-    this.folders.showFiles = !this.folders[id].showFiles;
+    this.folders[id].showFiles = !this.folders[id].showFiles;
   }
 
 

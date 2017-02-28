@@ -4,13 +4,6 @@
     height: 100%;
 }
 
-.background{
-  /*background-image: image('../img/patterns/furley_bg.png');*/
-  background-image: url("furley_bg.png");
-     background-repeat: repeat-y;
- /*background-color: #222;*/
-}
-
 .wrapper {
     display: table-cell;
     height: 100%;
@@ -21,6 +14,8 @@
     margin: auto;
     width: 512px;
     padding: 16px;
+    background-image: url('/app/public/img/patterns/furley_bg.png');
+    background-repeat: repeat-y;
 }
 
 h2 {
