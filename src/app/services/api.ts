@@ -7,6 +7,7 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/timeout';
 
+import { UserService } from './user';
 
 /*
 RESPONCE  CODES
@@ -21,7 +22,7 @@ export class APIService {
   private timeOut = 3000;
   private headerTemplate: Headers;
 
-  constructor(private http: Http) {
+  constructor(private http: Http, private user: UserService) {
     console.log('Postservice initialized...')
   }
 
@@ -29,8 +30,7 @@ export class APIService {
   private getRequest(path: string, authorization: boolean) {
     let headers = new Headers({ 'Access-Control-Allow-Origin': '*' });
     if (authorization) {
-      let token = localStorage.getItem('id_token');
-      headers.append('authorization', token);
+      headers.append('authorization', this.user.getToken());
     }
     let options = new RequestOptions({
       'url': this.URL + path,
@@ -49,12 +49,10 @@ export class APIService {
     headers.append('Access-Control-Allow-Origin', '*');
 
     // authentication not null
-    let token: string;
     if (authorization) {
-      token = localStorage.getItem('id_token');
-      headers.append('authorization', token);
+      headers.append('authorization', this.user.getToken());
       console.log('submit request');
-      console.log(token);
+      console.log(this.user.getToken());
     }
 
     console.log(headers);

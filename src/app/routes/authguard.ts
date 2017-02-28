@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Router, CanActivate } from '@angular/router';
-// import {tokenNotExpired} from 'angular2-jwt';
-// import {AuthenticationService} from '../services/authentication'
+
+import { UserService } from '../services/user';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(public router: Router) { }
+  constructor(public router: Router, private user: UserService) { }
 
   canActivate() {
-
-    // re-write not to use library.
-    // Check time stamp and if it's been tampered
-    if (localStorage.getItem('id_token')) {  //check tokent time stamp and if it exists
-      return true;     // add more security
+    // Reroute to login form if no user is logged in
+    if (this.user.isLoggedIn()) {
+      return true;
     } else {
       this.router.navigate(["login"]);
       return false;
