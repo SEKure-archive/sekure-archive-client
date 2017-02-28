@@ -12,7 +12,6 @@ import { UserService } from './services/user';
 
 //Routes for Components
 import { AppComponent } from './app.component';
-// import {UserComponent} from './user/user.component';
 
 // Pages
 import { routing } from './routes/routes';
