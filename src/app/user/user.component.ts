@@ -1,13 +1,13 @@
 
 import { Component } from '@angular/core';
-import {APIService} from '../services/api';
+import { APIService } from '../services/api';
 
 @Component({
   selector: 'sekure-user',
   template: `<h1>Hello</h1>`,
   providers: [APIService]
 })
-export class UserComponent  {
+export class UserComponent {
   // Class Variables
   // PostService: PostService;
   file_name: string;
@@ -16,16 +16,16 @@ export class UserComponent  {
 
 
   // Class constructor
-  constructor(private apiService : APIService){
+  constructor(private apiService: APIService) {
     console.log('User initialized...');
 
     var user = 'sean@mcglincy.com';
     var pass = 'hunter322';
 
-/*
-***************  API CALL *************************
-      Returns observable,  Use subscribe method
-*/
+    /*
+    ***************  API CALL *************************
+          Returns observable,  Use subscribe method
+    */
 
 
     // this.apiService.userLogin (user, pass).subscribe(data => {
@@ -53,6 +53,6 @@ export class UserComponent  {
 
 }
 // Structure for the mime interface
-interface mimeInterface{
+interface mimeInterface {
   type: string;
 }

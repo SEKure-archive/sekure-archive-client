@@ -1,47 +1,47 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {APIService} from '../../services/api';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { APIService } from '../../services/api';
 
 @Component({
   moduleId: module.id,  //Ignore error.  Needed to load templateUrl
-  selector : 'login',
+  selector: 'login',
   templateUrl: 'login.html',
   styleUrls: ['login.css'],
   providers: [APIService]
 })
 
 
-export class Login implements OnInit{
+export class Login implements OnInit {
   private showLogin: boolean;
   private error: string;
 
-  constructor(public router: Router, private apiService:APIService){
-    this.showLogin= true;
+  constructor(public router: Router, private apiService: APIService) {
+    this.showLogin = true;
     this.error = null;
   }
-  ngOnInit(){
+  ngOnInit() {
     // Check JWT when page loaded
     localStorage.getItem('id_token');
     this.router.navigate(['home']);
   }
 
-  isLoggedIn(){
+  isLoggedIn() {
     // return this.loggedIN;
   }
 
-  private toggleLogin(){
-    if(this.showLogin == true){
+  private toggleLogin() {
+    if (this.showLogin == true) {
       this.showLogin = false;
-    } else{
+    } else {
       this.showLogin = true;
     }
     this.error = null;
   }
-  formSubmitted(formSubmit : Event, username: string, password: string){
+  formSubmitted(formSubmit: Event, username: string, password: string) {
     formSubmit.preventDefault();  // prevents default form from HTML.   See login.html
     // Check user input Here
     // Salt password
-    if(this.showLogin){
+    if (this.showLogin) {
       this.login(username, password);
     } else {
       this.signup(username, password);
@@ -49,10 +49,10 @@ export class Login implements OnInit{
 
   }
 
-  private login(username: string, password: string){
+  private login(username: string, password: string) {
     this.apiService.userLogin(username, password)
-    .subscribe(
-      data =>{
+      .subscribe(
+      data => {
         console.log('Success: logged in....');
         console.log(data);
         localStorage.setItem('id_token', data.jwt);
@@ -69,8 +69,8 @@ export class Login implements OnInit{
 
   private signup(username: string, password: string) {
     this.apiService.userAdd(username, password)
-    .subscribe(
-      data =>{
+      .subscribe(
+      data => {
         console.log('Success: logged in....');
         console.log(data);
         localStorage.setItem('id_token', data.jwt);

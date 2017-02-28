@@ -1,5 +1,5 @@
-import {Injectable} from '@angular/core';
-import {Http, Headers, Request, RequestOptions, RequestMethod} from '@angular/http';
+import { Injectable } from '@angular/core';
+import { Http, Headers, Request, RequestOptions, RequestMethod } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -15,12 +15,12 @@ RESPONCE  CODES
 */
 
 @Injectable()
-export class APIService{
+export class APIService {
   private URL = 'http://172.17.0.2:8080';
   private timeOut = 3000;
-  private headerTemplate : Headers;
+  private headerTemplate: Headers;
 
-  constructor(private http : Http){
+  constructor(private http: Http) {
     console.log('Postservice initialized...')
   }
 
@@ -38,17 +38,17 @@ export class APIService{
     });
     return this.http.request(new Request(options))
       .map((res) => res.json())
-      .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
   }
 
   /** Submits non-GET requests (which *do* have a JSON body). */
-  private makeRequest (method : RequestMethod, path : string, body : string, authorization: boolean){
-    let headers      = new Headers({ 'Content-Type': 'application/json' });
+  private makeRequest(method: RequestMethod, path: string, body: string, authorization: boolean) {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Access-Control-Allow-Origin', '*');
 
     // authentication not null
-    let token :string;
-    if (authorization){
+    let token: string;
+    if (authorization) {
       token = localStorage.getItem('id_token');
       headers.append('authorization', token);
       console.log('submit request');
@@ -67,9 +67,9 @@ export class APIService{
     console.log(body);
 
     return this.http.request(new Request(options))
-    .timeout(this.timeOut)
-    .map((res) => res.json())
-    .catch((error:any) => Observable.throw(error.json().error || 'Server error'));;
+      .timeout(this.timeOut)
+      .map((res) => res.json())
+      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));;
   }
 
   // *************************   API CALLS ***********************************
@@ -77,15 +77,15 @@ export class APIService{
 
   // Creates a new user and returns a jws
   // var body = {"email": "userEmail","password": "userPassword"};
-  userAdd (email : string , password :string) {
-    var body = JSON.stringify({'email': email,'password': password});
+  userAdd(email: string, password: string) {
+    var body = JSON.stringify({ 'email': email, 'password': password });
     return this.makeRequest(RequestMethod.Post, '/users', body, false);
   }
 
   // INPUT: User Name & Password
   // OUTPUT:  returns a id_token
-  userLogin (email :string, password : string) {
-    var body = JSON.stringify({'email': email,'password': password});
+  userLogin(email: string, password: string) {
+    var body = JSON.stringify({ 'email': email, 'password': password });
     return this.makeRequest(RequestMethod.Post, '/login', body, false);
   }
   // *************************   FOLDERS   ********************************
@@ -97,15 +97,15 @@ export class APIService{
   }*/
   // INPUT: folder path
   // OUTPUT: folder id
-  postFolder (path:	string) {
-    var body = JSON.stringify({'path' : path});
+  postFolder(path: string) {
+    var body = JSON.stringify({ 'path': path });
     return this.makeRequest(RequestMethod.Post, '/folders', body, true);
   }
 
   // *************************  Multiple   FOLDERS   **************************
   //  INPUT: id_token  OUTPUT: JSON of all folders
   //  OUTPUT: Array of all folders
-  getALLFolders(){
+  getALLFolders() {
     return this.getRequest('/folders', true);
   }
 
@@ -113,13 +113,13 @@ export class APIService{
 
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFileByID(id:	number) {
+  getFileByID(id: number) {
     return this.getRequest(`/files/${id}`, true);
   }
   // INPUT: folder id and file name
   // OUTPUT: file id
-  postFile(folder_id:	number, fileName : string) {
-    var body = JSON.stringify({'folder_id': folder_id, name: fileName});
+  postFile(folder_id: number, fileName: string) {
+    var body = JSON.stringify({ 'folder_id': folder_id, name: fileName });
     return this.makeRequest(RequestMethod.Post, '/files', body, true);
   }
 
@@ -127,8 +127,8 @@ export class APIService{
 
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFilesWithID(id:	number) {
-    var body = JSON.stringify({folder_id: id});
+  getFilesWithID(id: number) {
+    var body = JSON.stringify({ folder_id: id });
     return this.getRequest(`/folders/${id}/files`, true);
   }
 
