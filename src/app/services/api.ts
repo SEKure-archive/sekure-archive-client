@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Request, RequestOptions, RequestMethod } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/throw';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/timeout';
@@ -37,8 +38,9 @@ export class APIService {
       'headers': headers,
     });
     return this.http.request(new Request(options))
+      .timeout(this.timeOut)
       .map((res) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+      .catch((error: any) => Observable.throw(error.json().error || 'Internal server error'));
   }
 
   /** Submits non-GET requests (which *do* have a JSON body). */
@@ -69,7 +71,7 @@ export class APIService {
     return this.http.request(new Request(options))
       .timeout(this.timeOut)
       .map((res) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Server error'));;
+      .catch((error: any) => Observable.throw(error.json().error || 'Internal server error'));;
   }
 
   // *************************   API CALLS ***********************************
