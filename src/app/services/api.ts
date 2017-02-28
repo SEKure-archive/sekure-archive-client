@@ -16,7 +16,7 @@ RESPONCE  CODES
 
 @Injectable()
 export class APIService{
-  private URL = 'http://localhost:8080';
+  private URL = 'http://172.17.0.2:8080';
   private timeOut = 3000;
   private headerTemplate : Headers;
 
