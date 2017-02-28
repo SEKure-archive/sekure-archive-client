@@ -6,11 +6,12 @@
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" #username class="form-control" id="username" placeholder="Username">
+          <div *ngIf="usernameError" class="alert alert-danger" role="alert"><b>Error:</b> {{usernameError}}</div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" #password class="form-control" id="password" placeholder="Password">
-          <div *ngIf="error" class="alert alert-danger" role="alert"><b>Error:</b> {{error}}</div>
+          <div *ngIf="passwordError" class="alert alert-danger" role="alert"><b>Error:</b> {{passwordError}}</div>
         </div>
         <a class="btn btn-default" (click)="toggleLogin()">{{showLogin? "Sign Up" : "Login"}}</a>
         <button type="submit" class="btn btn-success pull-right">{{showLogin? "Login" : "Sign Up"}}</button>

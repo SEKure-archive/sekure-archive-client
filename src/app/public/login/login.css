@@ -25,6 +25,10 @@ h2 {
     margin: 8px 0;
 }
 
+label {
+    margin-top: 4px;
+}
+
 .alert {
     margin: 16px 0 0 0;
     padding: 6px 10px;

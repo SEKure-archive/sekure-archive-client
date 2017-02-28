@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { APIService } from '../../services/api';
 
@@ -9,16 +9,20 @@ import { APIService } from '../../services/api';
   styleUrls: ['login.css'],
   providers: [APIService]
 })
-
-
 export class Login implements OnInit {
+  @ViewChild('username') username: ElementRef;
+  @ViewChild('password') password: ElementRef;
+
   private showLogin: boolean;
-  private error: string;
+  private usernameError: string;
+  private passwordError: string;
 
   constructor(public router: Router, private apiService: APIService) {
     this.showLogin = true;
-    this.error = null;
+    this.usernameError = null;
+    this.passwordError = null;
   }
+
   ngOnInit() {
     // Check JWT when page loaded
     localStorage.getItem('id_token');
@@ -35,8 +39,12 @@ export class Login implements OnInit {
     } else {
       this.showLogin = true;
     }
-    this.error = null;
+    this.username.nativeElement.value = '';
+    this.password.nativeElement.value = '';
+    this.usernameError = null;
+    this.passwordError = null;
   }
+
   formSubmitted(formSubmit: Event, username: string, password: string) {
     formSubmit.preventDefault();  // prevents default form from HTML.   See login.html
     // Check user input Here
@@ -61,26 +69,40 @@ export class Login implements OnInit {
 
       err => {
         localStorage.removeItem('id_token');
-        this.error = 'Invalid username or password.';
-        this.router.navigate(['login']);
+        this.passwordError = 'Invalid username or password.';
       });
   }
 
-
   private signup(username: string, password: string) {
-    this.apiService.userAdd(username, password)
-      .subscribe(
-      data => {
-        console.log('Success: logged in....');
-        console.log(data);
-        localStorage.setItem('id_token', data.jwt);
-        this.router.navigate(['home']);
-      },
+    // Client-side check of username and password
+    if (username.length == 0) {
+      this.usernameError = 'Username must not be empty.';
+    } else {
+      this.usernameError = null;
+    }
+    if (password.length < 8) {
+      this.passwordError = 'Password must be at least 8 characters long.';
+    } else if (password.length > 72) {
+      this.passwordError = 'Password must be no more than 72 characters long.';
+    } else {
+      this.passwordError = null;
+    }
 
-      err => {
-        localStorage.removeItem('id_token');
-        this.error = 'Invalid username or password.';
-        this.router.navigate(['login']);
-      });
+    // Attempt to register if the username and password seem to be OK
+    if (this.usernameError == null && this.passwordError == null) {
+      this.apiService.userAdd(username, password)
+        .subscribe(
+        data => {
+          console.log('Success: logged in....');
+          console.log(data);
+          localStorage.setItem('id_token', data.jwt);
+          this.router.navigate(['home']);
+        },
+
+        err => {
+          localStorage.removeItem('id_token');
+          this.usernameError = err;
+        });
+    }
   }
 }
