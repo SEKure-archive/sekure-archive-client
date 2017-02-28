@@ -14,13 +14,16 @@ import { UserService } from '../../services/user';
 export class Home implements OnInit {
   public username: string;
 
-  private folders: string[];
-  private folder: folderInterface;
 
-  private files: fileInterface[];
-  private file: fileInterface;
+  private folders: folderInterface[];
+  //Stor IDs
+  private folder: number;
+  private file: number;
 
-  constructor(public router: Router, private api: APIService, private user: UserService) { }
+  constructor(public router: Router, private api: APIService, private user: UserService) {
+    this.folder = null;
+    this.file = null;
+  }
 
   ngOnInit() {
     this.username = this.user.getUsername();
@@ -38,14 +41,15 @@ export class Home implements OnInit {
   }
 
   //Load files when Folder clicked
-  loadFiiles(id: number) {
-    console.log('Firing Load Files');
-    console.log(id);
+  loadFiles(id: number) {
+    this.folder = id;
     this.api.getFilesWithID(id).subscribe(
       data => {
         if (data) {
-          console.log(data);
-          // this.files = data.file;
+          console.log(data.status);
+          this.folders[id].files= data.files;
+          this.folders[id].showFiles= true;
+
         }
       }, err => {
         alert('There was a problem loading the files.')
@@ -56,19 +60,26 @@ export class Home implements OnInit {
     this.user.unsetUser();
     this.router.navigate(['login']);
   }
+
+  showFiles(id: number){
+    this.folders.showFiles = !this.folders[id].showFiles;
+  }
+
+
+
 }
 
 // Interfaces
+
 interface folderInterface {
+  showFiles : boolean;
   path: string;
   id: number;
+  files: fileInterface[];
 }
-
 interface fileInterface {
   id: number;
   name: string;
   folderID: number;
-  mime: {
-    type: string,
-  }
+  mime: string;
 }

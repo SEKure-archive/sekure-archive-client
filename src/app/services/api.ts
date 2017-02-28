@@ -26,22 +26,6 @@ export class APIService {
     console.log('Postservice initialized...')
   }
 
-  /** Submits GET requests (which do not have a JSON body). */
-  private getRequest(path: string, authorization: boolean) {
-    let headers = new Headers({ 'Access-Control-Allow-Origin': '*' });
-    if (authorization) {
-      headers.append('authorization', this.user.getToken());
-    }
-    let options = new RequestOptions({
-      'url': this.URL + path,
-      'method': RequestMethod.Get,
-      'headers': headers,
-    });
-    return this.http.request(new Request(options))
-      .timeout(this.timeOut)
-      .map((res) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Internal server error'));
-  }
 
   /** Submits non-GET requests (which *do* have a JSON body). */
   private makeRequest(method: RequestMethod, path: string, body: string, authorization: boolean) {
@@ -51,11 +35,7 @@ export class APIService {
     // authentication not null
     if (authorization) {
       headers.append('authorization', this.user.getToken());
-      console.log('submit request');
-      console.log(this.user.getToken());
     }
-
-    console.log(headers);
 
     //Data
     let options = new RequestOptions({
@@ -64,7 +44,6 @@ export class APIService {
       'method': method,
       'headers': headers
     });
-    console.log(body);
 
     return this.http.request(new Request(options))
       .timeout(this.timeOut)
@@ -106,7 +85,7 @@ export class APIService {
   //  INPUT: id_token  OUTPUT: JSON of all folders
   //  OUTPUT: Array of all folders
   getALLFolders() {
-    return this.getRequest('/folders', true);
+    return this.makeRequest(RequestMethod.Get, '/folders', null, true);
   }
 
   // *************************  Single  FILES   ********************************
@@ -114,7 +93,7 @@ export class APIService {
   // INPUT: file id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
   getFileByID(id: number) {
-    return this.getRequest(`/files/${id}`, true);
+    return this.makeRequest(RequestMethod.Get, `/files/${id}`, null, true);
   }
   // INPUT: folder id and file name
   // OUTPUT: file id
@@ -129,7 +108,7 @@ export class APIService {
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
   getFilesWithID(id: number) {
     var body = JSON.stringify({ folder_id: id });
-    return this.getRequest(`/folders/${id}/files`, true);
+    return this.makeRequest(RequestMethod.Get, `/folders/${id}/files`, null, true);
   }
 
 

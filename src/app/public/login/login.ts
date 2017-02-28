@@ -53,7 +53,6 @@ export class Login implements OnInit {
     this.api.userLogin(username, password)
       .subscribe(data => {
         console.log('Success: logged in....');
-        console.log(data);
         this.user.setUser(username, data.jwt);
         this.router.navigate(['home']);
       }, err => {

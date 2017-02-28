@@ -4,6 +4,13 @@
     height: 100%;
 }
 
+.background{
+  /*background-image: image('../img/patterns/furley_bg.png');*/
+  background-image: url("furley_bg.png");
+     background-repeat: repeat-y;
+ /*background-color: #222;*/
+}
+
 .wrapper {
     display: table-cell;
     height: 100%;

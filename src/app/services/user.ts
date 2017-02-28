@@ -35,13 +35,17 @@ export class UserService {
     return localStorage.getItem(JWT_KEY);
   }
 
+
+
   /** Returns whether there is currently a user logged in (best effort, token could be invalid). */
   public isLoggedIn(): boolean {
     let token = this.getToken();
     if (token) {
-      return jwt(token).exp < new Date().getTime();
-    } else {
-      return false;
+      if (jwt(token).exp < new Date().getTime()){
+        return true;
+      }
+       this.unsetUser();
     }
+      return false;
   }
 }

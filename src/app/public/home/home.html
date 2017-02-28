@@ -9,14 +9,50 @@
     </div>
   </div>
 </nav>
-<div class="text-center">
-  <h3>Folders</h3>
-  <div *ngFor= "let folder of folders">
-    <button (click)="loadFiiles(folder.id)" class="btn btn-default">{{folder.path}}</button>
-    <ul>
-      <div *ngFor= "let file of folders">
-        <p>{{file.name}}</p>
+
+<!-- Container for folder and files -->
+<div class = "container">
+  <div class="text-center">
+    <h3>Your Folders</h3>
+    <div *ngFor= "let folder of folders; let i = index">
+
+      <!-- Colapsable folders -->
+      <div class="panel-group">
+        <div class="panel panel-default">
+          <div class="panel-heading ">
+            <h4 class="panel-title">
+
+              <a data-toggle="collapse" (click)="loadFiles(folder.id)">{{folder.path}}</a>
+            </h4>
+          </div>
+
+          <!-- Files -->
+          <div class="">
+            <div *ngFor= "let file of folder.files">
+
+              <ul id="folder.id" class="list-group">
+                <li class="list-group-item">"{{file.name}}"</li>
+              </ul>
+            </div>
+
+
+            <!-- Display folder data here -->
+            <!-- <div class="panel-footer">Footer</div> -->
+
+          </div>
+
+        </div>
       </div>
-    </ul>
+    </div>
+
+
+
+
+    <!-- <button (click)="loadFiiles(folder.id)" class="btn btn-default">{{folder.path}}</button> -->
+    <!-- <ul> -->
+    <!-- <div *ngFor= "let file of folders"> -->
+    <!-- <p>{{file.name}}</p> -->
+    <!-- </div> -->
+    <!-- </ul> -->
   </div>
 </div>
