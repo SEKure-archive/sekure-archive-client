@@ -15,11 +15,13 @@ export class Login implements OnInit {
   @ViewChild('password') password: ElementRef;
 
   private showLogin: boolean;
+  private working: boolean;
   private usernameError: string;
   private passwordError: string;
 
   constructor(public router: Router, private api: APIService, private user: UserService) {
     this.showLogin = true;
+    this.working = false;
     this.usernameError = null;
     this.passwordError = null;
   }
@@ -31,6 +33,9 @@ export class Login implements OnInit {
   }
 
   private toggleLogin() {
+    // If an API call is in progress, ignore the button press.
+    if (this.working) return;
+
     this.showLogin = !this.showLogin;
     // Reset the form
     this.username.nativeElement.value = '';
@@ -39,9 +44,12 @@ export class Login implements OnInit {
     this.passwordError = null;
   }
 
-  formSubmitted(formSubmit: Event, username: string, password: string) {
-    // Prevent actual form submission
-    formSubmit.preventDefault();
+  submitForm() {
+    // If an API call is in progress, ignore the button press.
+    if (this.working) return;
+
+    let username = this.username.nativeElement.value;
+    let password = this.password.nativeElement.value;
     if (this.showLogin) {
       this.login(username, password);
     } else {
@@ -50,6 +58,7 @@ export class Login implements OnInit {
   }
 
   private login(username: string, password: string) {
+    this.working = true;
     this.api.userLogin(username, password)
       .subscribe(data => {
         console.log('Success: logged in....');
@@ -57,6 +66,7 @@ export class Login implements OnInit {
         this.router.navigate(['home']);
       }, err => {
         this.passwordError = 'Invalid username or password.';
+        this.working = false;
       });
   }
 
@@ -77,6 +87,7 @@ export class Login implements OnInit {
 
     // Attempt to register if the username and password seem to be OK
     if (this.usernameError == null && this.passwordError == null) {
+      this.working = true;
       this.api.userAdd(username, password)
         .subscribe(data => {
           console.log('Success: logged in....');
@@ -85,6 +96,7 @@ export class Login implements OnInit {
           this.router.navigate(['home']);
         }, err => {
           this.usernameError = err;
+          this.working = false;
         });
     }
   }
