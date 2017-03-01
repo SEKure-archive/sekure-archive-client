@@ -114,7 +114,7 @@ export class APIService {
 
   // ************************* Multiple  FILES   ********************************
 
-  // INPUT: file id
+  // INPUT: folder id
   // OUTPUT: file id : number, folder_id: number, name: string, mime: string
   getFilesWithID(id: number) {
     var body = JSON.stringify({ folder_id: id });

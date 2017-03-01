@@ -26,16 +26,26 @@
         <div class="panel panel-default">
           <div class="panel-heading ">
             <h4 class="panel-title">
-              <a  data-toggle="collapse" (click)="loadFiles(folder.id)" class="click">{{folder.path}}</a>
+              <a  data-toggle="collapse" (click)="loadFiles(i, folder.id)" class="click">{{folder.path}}</a>
             </h4>
           </div>
 
           <!-- Files -->
           <div *ngIf="folder.show">
-            <div *ngFor= "let file of folder.files">
+            <div *ngFor= "let file of folder.files; let j=index">
 
               <ul id="folder.id" class="list-group">
-                <li class="list-group-item">"{{file.name}}"</li>
+                <li (click)="showDetails(i, j)"  class="list-group-item click">"{{file.name}}"</li>
+                  <div *ngIf="file.show">
+                    <div class="panel-footer">
+                    <h3 >{{file.name}}</h3>
+                      <p>"File Name: {{file.mime}}"</p>
+                      <p>"Path: {{folder.name}}"</p>
+                      <p>"Mime: {{file.mime}}"</p>
+                      <!-- Add other data HERE  -->
+                    </div>
+                  </div>
+
               </ul>
             </div>
 

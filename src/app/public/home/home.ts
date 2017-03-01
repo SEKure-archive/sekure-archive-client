@@ -20,7 +20,7 @@ export class Home implements OnInit {
   constructor(public router: Router, private api: APIService, private user: UserService) {
   }
 
-  private ngOnInit() {
+  ngOnInit() {
     this.working = true;
     this.username = this.user.getUsername();
     // Load folder on page load
@@ -36,25 +36,29 @@ export class Home implements OnInit {
       this.working = false;
     }
 
-    private loadFiles(id: number){
+    private loadFiles(i: number, id: number){
+      console.log(i);
       this.working = true;
-      id--; // ofset
-      if(!this.folders[id].loaded){
-        this.queryFiles(id);
+      // id--; // ofset
+      if(!this.folders[i].loaded){
+        this.queryFiles(i, id);
+
       } else{
-        this.showToggle(id);
+        this.showToggle(i);
       }
       this.working = false;
     }
 
+
     //Load files when Folder clicked
-    private queryFiles(id: number) {
+    private queryFiles(i: number, id: number) {
       this.api.getFilesWithID(id).subscribe(
         data => {
           if (data) {
-            this.folders[id].files= data.files;
-            this.folders[id].show = true;
-            this.folders[id].loaded = true;
+            this.folders[i].files= data.files;
+            // this.folders[id].unique = this.folders[id].unique.filter((x, i, a) => x !== undefined && a.indexOf(x) === i);
+            this.folders[i].show = true;
+            this.folders[i].loaded = true;
           }
         }, err => {
           this.queryError(err);
@@ -69,13 +73,23 @@ export class Home implements OnInit {
         }
       }
 
+      private showDetails(i: number, j:number){
+        // folderID--;
+        // fileID--;  // OFFSETS
+        if(this.folders[i].files[j].show == null){
+          this.folders[i].files[j].show = true;
+        }else {
+          this.folders[i].files[j].show =   !this.folders[i].files[j].show;
+        }
+      }
+
       private logout() {
         this.user.unsetUser();
         this.router.navigate(['login']);
       }
 
-      private showToggle(id : number){
-        this.folders[id].show = !this.folders[id].show;
+      private showToggle(i : number){
+        this.folders[i].show = !this.folders[i].show;
       }
     }
 
@@ -85,6 +99,7 @@ export class Home implements OnInit {
       path: string;
       id: number;
       files: fileInterface[];
+
       loaded : boolean;
       show : boolean;
     }
@@ -93,4 +108,5 @@ export class Home implements OnInit {
       name: string;
       folderID: number;
       mime: string;
+      show: boolean;
     }
