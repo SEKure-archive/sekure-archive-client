@@ -65,7 +65,7 @@ export class Login implements OnInit {
         this.user.setUser(username, data.jwt);
         this.router.navigate(['home']);
       }, err => {
-        this.passwordError = 'Invalid username or password.';
+        this.passwordError = err;
         this.working = false;
       });
   }

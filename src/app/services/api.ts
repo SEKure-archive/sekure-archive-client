@@ -48,7 +48,17 @@ export class APIService {
     return this.http.request(new Request(options))
       .timeout(this.timeOut)
       .map((res) => res.json())
-      .catch((error: any) => Observable.throw(error.json().error || 'Internal server error'));;
+      .catch((error: any) => {
+        if ('json' in error) {
+          if (error.status == 400) {
+            return Observable.throw('Invalid request.');
+          } else {
+            return Observable.throw(error.json().error || 'Internal server error.');
+          }
+        } else {
+          return Observable.throw('Could not establish a connection to the server.');
+        }
+      });
   }
 
   // *************************   API CALLS ***********************************
