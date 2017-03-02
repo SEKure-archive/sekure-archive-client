@@ -37,7 +37,7 @@ export class Home implements OnInit {
     }
 
     private loadFiles(i: number, id: number){
-      console.log(i);
+      // this.user.isLoggedIn();
       this.working = true;
       // id--; // ofset
       if(!this.folders[i].loaded){
@@ -67,7 +67,7 @@ export class Home implements OnInit {
       private queryError(err: any){
         if(!this.user.isLoggedIn()){  // Will logout automatic
           this.router.navigate(['login']);
-          alert('Your session has expired.');
+          this.user.setSessionExpired();
         } else {
           alert('There was a problem loading the folders.');
         }

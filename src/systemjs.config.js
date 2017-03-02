@@ -29,7 +29,9 @@
       // other libraries
       'rxjs':                      'npm:rxjs',
       'angular-in-memory-web-api': 'npm:angular-in-memory-web-api/bundles/in-memory-web-api.umd.js',
-      'jwt-decode':                'npm:jwt-decode/lib'
+      'jwt-decode':                'npm:jwt-decode/lib',
+      'angular2-cookie':            'npm:angular2-cookie'
+
     },
     // packages tells the System loader how to load when no filename and/or no extension
     packages: {
@@ -40,6 +42,10 @@
         defaultExtension: 'js'
       },
       'jwt-decode': {
+        defaultExtension: 'js'
+      },
+      'angular2-cookie': {
+        main: './core.js',
         defaultExtension: 'js'
       }
     }

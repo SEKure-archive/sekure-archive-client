@@ -19,6 +19,7 @@ export class Login implements OnInit {
   private usernameError: string;
   private passwordError: string;
 
+
   constructor(public router: Router, private api: APIService, private user: UserService) {
     this.showLogin = true;
     this.working = false;
@@ -29,6 +30,9 @@ export class Login implements OnInit {
   ngOnInit() {
     if (this.user.isLoggedIn()) {
       this.router.navigate(['home']);
+    } else if(this.user.isSessionExpired()){
+      this.passwordError = 'Your session has expired.';
+      this.user.resetSessionExpired();
     }
   }
 
@@ -61,7 +65,6 @@ export class Login implements OnInit {
     this.working = true;
     this.api.userLogin(username, password)
       .subscribe(data => {
-        console.log('Success: logged in....');
         this.user.setUser(username, data.jwt);
         this.router.navigate(['home']);
       }, err => {
@@ -90,8 +93,6 @@ export class Login implements OnInit {
       this.working = true;
       this.api.userAdd(username, password)
         .subscribe(data => {
-          console.log('Success: logged in....');
-          console.log(data);
           this.user.setUser(username, data.jwt);
           this.router.navigate(['home']);
         }, err => {
