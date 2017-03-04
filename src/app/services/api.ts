@@ -68,22 +68,23 @@ export class APIService {
   // var body = {"email": "userEmail","password": "userPassword"};
   userAdd(email: string, password: string) {
     var body = JSON.stringify({ 'email': email, 'password': password });
-    return this.makeRequest(RequestMethod.Post, '/users', body, false);
+    return this.makeRequest(RequestMethod.Post, '/accounts', body, false);
   }
 
   // INPUT: User Name & Password
   // OUTPUT:  returns a id_token
   userLogin(email: string, password: string) {
     var body = JSON.stringify({ 'email': email, 'password': password });
-    return this.makeRequest(RequestMethod.Post, '/login', body, false);
+    return this.makeRequest(RequestMethod.Post, '/accounts/login', body, false);
   }
   // *************************   FOLDERS   ********************************
-  // INPUT: folder path
-  // OUTPUT: folder id
-  /*getFolderID(path:	string) {
-    var body = JSON.stringify({'path' : path});
-    return this.makeRequest(RequestMethod.Get, '/filesystem/folder', body, true);
-  }*/
+
+  // INPUT: folder id
+  // OUTPUT: folder data
+  getFolder(id:	number) {
+    return this.makeRequest(RequestMethod.Get, `/folders/${id}`, null, true);
+  }
+
   // INPUT: folder path
   // OUTPUT: folder id
   postFolder(path: string) {
@@ -111,15 +112,4 @@ export class APIService {
     var body = JSON.stringify({ 'folder_id': folder_id, name: fileName });
     return this.makeRequest(RequestMethod.Post, '/files', body, true);
   }
-
-  // ************************* Multiple  FILES   ********************************
-
-  // INPUT: folder id
-  // OUTPUT: file id : number, folder_id: number, name: string, mime: string
-  getFilesWithID(id: number) {
-    var body = JSON.stringify({ folder_id: id });
-    return this.makeRequest(RequestMethod.Get, `/folders/${id}/files`, null, true);
-  }
-
-
 }

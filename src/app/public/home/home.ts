@@ -52,7 +52,7 @@ export class Home implements OnInit {
 
     //Load files when Folder clicked
     private queryFiles(i: number, id: number) {
-      this.api.getFilesWithID(id).subscribe(
+      this.api.getFolder(id).subscribe(
         data => {
           if (data) {
             this.folders[i].files= data.files;
@@ -99,7 +99,6 @@ export class Home implements OnInit {
       path: string;
       id: number;
       files: fileInterface[];
-
       loaded : boolean;
       show : boolean;
     }
