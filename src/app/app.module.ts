@@ -21,10 +21,13 @@ import { routing } from './routes/routes';
 import { Home } from './public/home/home';
 import { Login } from './public/login/login';
 
+// Pipes
+import { BytesPipe } from './pipes/bytes';
+
 @NgModule({
-  imports: [BrowserModule, HttpModule, routing],    //Declare Library functions
+  imports: [BrowserModule, HttpModule, routing],
   providers: [CookieService, AuthGuard, APIService, UserService],
-  declarations: [AppComponent, FileComponent, FolderComponent, Home, Login],  //Declare components and sub components
-  bootstrap: [AppComponent]  //Declare to use in main html
+  declarations: [AppComponent, FileComponent, FolderComponent, Home, Login, BytesPipe],
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

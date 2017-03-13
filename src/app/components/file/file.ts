@@ -6,7 +6,7 @@ import { APIService, File } from '../../services/api';
   selector: 'file',
   templateUrl: 'file.html',
   styleUrls: ['file.css'],
-  providers: [APIService]
+  providers: [APIService],
 })
 export class FileComponent {
     @Input() file: File;

@@ -6,6 +6,6 @@
   </ul>
   <div *ngIf="open" class="contents">
     <p>Mime: {{file.mime}}</p>
-    <p>Size: {{file.size}} bytes</p>
+    <p>Size: {{file.size | bytes}}</p>
   </div>
 </div>
