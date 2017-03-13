@@ -18,7 +18,7 @@ RESPONCE  CODES
 
 @Injectable()
 export class APIService {
-  private URL = 'http://172.17.0.2:8080';
+  private URL = 'http://172.17.0.2:80';
   private timeOut = 3000;
   private headerTemplate: Headers;
 
@@ -34,7 +34,7 @@ export class APIService {
 
     // authentication not null
     if (authorization) {
-      headers.append('authorization', this.user.getToken());
+      headers.append('authorization', `Bearer ${this.user.getToken()}`);
     }
 
     //Data
