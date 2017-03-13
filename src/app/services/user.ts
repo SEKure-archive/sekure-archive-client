@@ -40,17 +40,21 @@ export class UserService{
 
     this.username = username;
     this.cookie.put(JWT_KEY, jwt, opts);
-
+    localStorage.setItem('username', username);
   }
 
   /** Unsets the current user and clears authentication information. */
   public unsetUser() {
     this.username = null;
     this.cookie.remove(JWT_KEY);
+    localStorage.removeItem('username');
   }
 
   /** Returns the username of the currently logged in user, if any. */
   public getUsername(): string {
+    if (!this.username) {
+      this.username = localStorage.getItem('username');
+    }
     return this.username;
   }
 
