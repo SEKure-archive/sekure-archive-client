@@ -16,6 +16,30 @@ RESPONCE  CODES
 403	 INVALID TOKEN /Email is already in use
 */
 
+/** A file. */
+export interface File {
+  id: number;
+  name: string;
+  mime: string;
+}
+
+/** A folder. */
+export interface Folder {
+  id: number;
+  path: string;
+  created: Date;
+  modified: Date;
+}
+
+function convertFolder(data: any): Folder {
+  return {
+    id: data.id,
+    path: data.path,
+    created: new Date(data.created),
+    modified: new Date(data.modified),
+  };
+}
+
 @Injectable()
 export class APIService {
   private URL = 'http://172.17.0.2:80';
@@ -28,7 +52,7 @@ export class APIService {
 
 
   /** Submits non-GET requests (which *do* have a JSON body). */
-  private makeRequest(method: RequestMethod, path: string, body: string, authorization: boolean) {
+  private makeRequest(method: RequestMethod, path: string, body: string, authorization: boolean): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     headers.append('Access-Control-Allow-Origin', '*');
 
@@ -81,8 +105,8 @@ export class APIService {
 
   // INPUT: folder id
   // OUTPUT: folder data
-  getFolder(id: number) {
-    return this.makeRequest(RequestMethod.Get, `/folders/${id}`, null, true);
+  getFolder(id: number): Observable<File[]> {
+    return this.makeRequest(RequestMethod.Get, `/folders/${id}`, null, true).map(data => data.files);
   }
 
   // INPUT: folder path
@@ -95,8 +119,10 @@ export class APIService {
   // *************************  Multiple   FOLDERS   **************************
   //  INPUT: id_token  OUTPUT: JSON of all folders
   //  OUTPUT: Array of all folders
-  getALLFolders() {
-    return this.makeRequest(RequestMethod.Get, '/folders', null, true);
+  getALLFolders(): Observable<Folder[]> {
+    return this.makeRequest(RequestMethod.Get, '/folders', null, true).map(data => {
+      return data.folders.map(convertFolder);
+    });
   }
 
   // *************************  Single  FILES   ********************************

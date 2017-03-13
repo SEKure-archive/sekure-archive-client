@@ -13,6 +13,8 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 
 //Routes for Components
 import { AppComponent } from './app.component';
+import { FileComponent } from './components/file/file';
+import { FolderComponent } from './components/folder/folder';
 
 // Pages
 import { routing } from './routes/routes';
@@ -22,7 +24,7 @@ import { Login } from './public/login/login';
 @NgModule({
   imports: [BrowserModule, HttpModule, routing],    //Declare Library functions
   providers: [CookieService, AuthGuard, APIService, UserService],
-  declarations: [AppComponent, Home, Login],  //Declare components and sub components
+  declarations: [AppComponent, FileComponent, FolderComponent, Home, Login],  //Declare components and sub components
   bootstrap: [AppComponent]  //Declare to use in main html
 })
 export class AppModule { }

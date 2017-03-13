@@ -18,38 +18,7 @@
 <!-- Container for folder and files -->
 <div class = "container">
   <div class="text-center">
-    <h3>Your Folders</h3>
-    <div *ngFor= "let folder of folders; let i = index">
-
-      <!-- Colapsable folders -->
-      <div class="panel-group">
-        <div class="panel panel-default">
-          <div class="panel-heading ">
-            <h4 class="panel-title">
-              <a  data-toggle="collapse" (click)="loadFiles(i, folder.id)" class="click">{{folder.path}}</a>
-            </h4>
-          </div>
-
-          <!-- Files -->
-          <div *ngIf="folder.show">
-            <div *ngFor= "let file of folder.files; let j=index">
-
-              <ul id="folder.id" class="list-group">
-                <li (click)="showDetails(i, j)"  class="list-group-item click">"{{file.name}}"</li>
-                  <div *ngIf="file.show">
-                    <div class="panel-footer">
-                    <h3 >{{file.name}}</h3>
-                      <p>"File Name: {{file.name}}"</p>
-                      <p>"Path: {{folder.path}}"</p>
-                      <p>"Mime: {{file.mime}}"</p>
-                      <!-- Add other data HERE  -->
-                    </div>
-                  </div>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <h3>Folders</h3>
+    <folder *ngFor="let folder of folders" [folder]="folder"></folder>
   </div>
 </div>

@@ -1,3 +1,8 @@
+h3 {
+    margin-top: 8px;
+    margin-bottom: 24px;
+}
+
 .nav > button {
     margin: 8px 8px 0 0;
 }
@@ -9,7 +14,6 @@
     box-shadow: 2px 2px 4px #C0C0C0;
 }
 
-.click{
+.click {
     cursor: pointer;
-    cursor: hand;
 }
