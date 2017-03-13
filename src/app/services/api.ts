@@ -81,7 +81,7 @@ export class APIService {
 
   // INPUT: folder id
   // OUTPUT: folder data
-  getFolder(id:	number) {
+  getFolder(id: number) {
     return this.makeRequest(RequestMethod.Get, `/folders/${id}`, null, true);
   }
 

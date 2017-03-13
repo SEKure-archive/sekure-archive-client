@@ -1,6 +1,6 @@
 import * as jwt from 'jwt-decode/index';
 import { Injectable } from '@angular/core';
-import {CookieService} from 'angular2-cookie/core';
+import { CookieService } from 'angular2-cookie/core';
 const JWT_KEY: string = 'session';
 // https://github.com/salemdar/angular2-cookie#put
 
@@ -8,7 +8,7 @@ const JWT_KEY: string = 'session';
 
 /** A service that manages the currently logged in user. */
 @Injectable()
-export class UserService{
+export class UserService {
   /** The username of the currently logged in user, if any. */
   private username: string;
   private cookieExpires: number;  // hours before expires
@@ -33,7 +33,7 @@ export class UserService{
 
     let opts: CookieOptionsArgs = {
       path: './services/user',
-      domain : 'localhost',
+      domain: 'localhost',
       expires: date,
       secure: this.cookieHTTPS,
     };
@@ -64,17 +64,17 @@ export class UserService{
     return this.cookie.get(JWT_KEY);
   }
 
-  public setSessionExpired(): void{
+  public setSessionExpired(): void {
     localStorage.setItem('expired', 'true');
     this.unsetUser();
   }
-  public isSessionExpired(): boolean{
-    if(localStorage.getItem('expired'))
-        return true;
-      else
-        return false;
+  public isSessionExpired(): boolean {
+    if (localStorage.getItem('expired'))
+      return true;
+    else
+      return false;
   }
-  public resetSessionExpired(): void{
+  public resetSessionExpired(): void {
     localStorage.removeItem('expired');
   }
 
@@ -82,7 +82,7 @@ export class UserService{
   public isLoggedIn(): boolean {
     let token = this.getToken();
     if (token) {
-      if (jwt(token).exp < new Date().getTime()){
+      if (jwt(token).exp < new Date().getTime()) {
         return true;
       }
       this.setSessionExpired();

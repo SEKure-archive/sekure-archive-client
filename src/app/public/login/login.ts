@@ -30,7 +30,7 @@ export class Login implements OnInit {
   ngOnInit() {
     if (this.user.isLoggedIn()) {
       this.router.navigate(['home']);
-    } else if(this.user.isSessionExpired()){
+    } else if (this.user.isSessionExpired()) {
       this.passwordError = 'Your session has expired.';
       this.user.resetSessionExpired();
     }
