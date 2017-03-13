@@ -21,6 +21,7 @@ export interface File {
   id: number;
   name: string;
   mime: string;
+  size: number;
 }
 
 /** A folder. */
