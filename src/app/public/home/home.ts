@@ -3,6 +3,12 @@ import { Router } from '@angular/router';
 import { APIService, Folder } from '../../services/api';
 import { UserService } from '../../services/user';
 
+/** Any currently displayed messages. */
+export class Flash {
+  error: string = null;
+  notification: string = null;
+}
+
 @Component({
   moduleId: module.id,
   selector: 'home',
@@ -10,11 +16,12 @@ import { UserService } from '../../services/user';
   styleUrls: ['home.css'],
   providers: [APIService]
 })
-
 export class Home implements OnInit {
-  public username: string;
   private working: boolean;
   private folders: Folder[];
+
+  username: string = null;
+  flash: Flash = new Flash();
 
   constructor(public router: Router, private api: APIService, private user: UserService) { }
 
@@ -22,17 +29,16 @@ export class Home implements OnInit {
     this.working = true;
     this.username = this.user.getUsername();
     // Load folders on page load
-    console.log('Firing Homepage On Init');
     this.api.getALLFolders().subscribe(folders => {
       this.folders = folders;
       this.working = false;
-    }, err => {
+    }, error => {
       if (!this.user.isLoggedIn()) {
         this.router.navigate(['login']);
         this.user.setSessionExpired();
       } else {
         this.working = false;
-        alert('There was a problem loading the folders.');
+        this.flash.error = error;
       }
     });
   }

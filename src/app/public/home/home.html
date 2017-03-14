@@ -18,6 +18,14 @@
 <!-- Container for folder and files -->
 <div class = "container">
   <div class="text-center">
+    <div *ngIf="flash.error" class="alert alert-danger" role="alert" (click)="flash.error = null">
+      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <b>Error:</b> {{flash.error}}
+    </div>
+    <div *ngIf="flash.notification" class="alert alert-info" role="alert" (click)="flash.notification = null">
+      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {{flash.notification}}
+    </div>
     <h3>Folders</h3>
     <folder *ngFor="let folder of folders" [folder]="folder"></folder>
   </div>
