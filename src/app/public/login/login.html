@@ -1,9 +1,7 @@
 <div class="main">
   <div class="wrapper">
     <div class="well">
-      <div *ngIf="working" class="spinner">
-        <img src="/app/public/img/icons/spinner.gif">
-      </div>
+      <spinner *ngIf="working" [size]="96"></spinner>
       <h2>{{showLogin? "Login" : "Sign Up"}}</h2>
       <form role="form">
         <div class="form-group">

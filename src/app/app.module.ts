@@ -15,6 +15,7 @@ import { CookieService } from 'angular2-cookie/services/cookies.service';
 import { AppComponent } from './app.component';
 import { FileComponent } from './components/file/file';
 import { FolderComponent } from './components/folder/folder';
+import { SpinnerComponent } from './components/spinner/spinner';
 
 // Pages
 import { routing } from './routes/routes';
@@ -27,7 +28,7 @@ import { BytesPipe } from './pipes/bytes';
 @NgModule({
   imports: [BrowserModule, HttpModule, routing],
   providers: [CookieService, AuthGuard, APIService, UserService],
-  declarations: [AppComponent, FileComponent, FolderComponent, Home, Login, BytesPipe],
+  declarations: [AppComponent, FileComponent, FolderComponent, SpinnerComponent, Home, Login, BytesPipe],
   bootstrap: [AppComponent],
 })
 export class AppModule { }
